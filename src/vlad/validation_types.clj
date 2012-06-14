@@ -7,6 +7,11 @@
   `validate` should return a vector of errors as strings."
   (validate [self data]))
 
+(defn valid
+  "A validation that does nothing. It can be safely composed with other
+  validations. This can be considered the identity value for monoid purposes."
+  [data] [])
+
 (defn child-errors
   "Composed validations form a binary tree structure. This structure is
   recursively descended when validating against some data. `child-errors`
@@ -29,8 +34,10 @@
     (join
       (present \"Name\" :name)
       (present \"Age\" :age))"
-  [left right]
-  (Join. left right))
+  ([] valid)
+  ([left] left)
+  ([left right] (Join. left right))
+  ([left right & rest] (reduce (Join. left right) rest)))
 
 ;; `Chain` can also be using for composing validations. However it will fail
 ;; fast, only returning the first validation if it fails. If the first
@@ -49,8 +56,10 @@
     (chain
       (present \"Password\" :password)
       (length_over 7 \"Password\" :password))"
-  [left right]
-  (Chain. left right))
+  ([] valid)
+  ([left] left)
+  ([left right] (Chain. left right))
+  ([left right & rest] (reduce (Chain. left right) rest)))
 
 ;; Predicates are simple functions that take some data and return a boolean
 ;; value. They're ideal for use as validators and so `Predicate` exists to make
