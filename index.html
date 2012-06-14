@@ -3040,7 +3040,10 @@ net.brehaut.ClojureTools = (function (SH) {
   validation type knows how to run against some data. Implementations of
   <code>validate</code> should return a vector of errors as strings.</p>
 </td><td class="codes"><pre class="brush: clojure">(defprotocol Validation
-  (validate [self data]))</pre></td></tr><tr><td class="docs"><p>Composed validations form a binary tree structure. This structure is
+  (validate [self data]))</pre></td></tr><tr><td class="docs"><p>A validation that does nothing. It can be safely composed with other
+  validations. This can be considered the identity value for monoid purposes.</p>
+</td><td class="codes"><pre class="brush: clojure">(defn valid
+  [data] [])</pre></td></tr><tr><td class="docs"><p>Composed validations form a binary tree structure. This structure is
   recursively descended when validating against some data. <code>child-errors</code>
   validates both branches against the data and concatenates their errors.</p>
 </td><td class="codes"><pre class="brush: clojure">(defn child-errors
@@ -3059,8 +3062,10 @@ validations and they will be recursively traversed.</p>
   (present "Age" :age))
 </code></pre>
 </td><td class="codes"><pre class="brush: clojure">(defn join
-  [left right]
-  (Join. left right))</pre></td></tr><tr><td class="docs"><p><code>Chain</code> can also be using for composing validations. However it will fail
+  ([] valid)
+  ([left] left)
+  ([left right] (Join. left right))
+  ([left right &amp; rest] (reduce (Join. left right) rest)))</pre></td></tr><tr><td class="docs"><p><code>Chain</code> can also be using for composing validations. However it will fail
 fast, only returning the first validation if it fails. If the first
 validation failed with multiple errors (ie: you're chaining a <code>Join</code>) then
 all of those errors will still be returned</p>
@@ -3076,8 +3081,10 @@ all of those errors will still be returned</p>
   (length_over 7 "Password" :password))
 </code></pre>
 </td><td class="codes"><pre class="brush: clojure">(defn chain
-  [left right]
-  (Chain. left right))</pre></td></tr><tr><td class="docs"><p>Predicates are simple functions that take some data and return a boolean
+  ([] valid)
+  ([left] left)
+  ([left right] (Chain. left right))
+  ([left right &amp; rest] (reduce (Chain. left right) rest)))</pre></td></tr><tr><td class="docs"><p>Predicates are simple functions that take some data and return a boolean
 value. They're ideal for use as validators and so <code>Predicate</code> exists to make
 wrapping them up easy. All that's needed to turn a predicate into a
 validator is a selector (for drilling down into data) and an error message.</p>
