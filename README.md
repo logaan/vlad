@@ -5,7 +5,13 @@ purely functional and makes no assumptions about your data. It can be used for
 validating html form data as just as well as it can be used to validate your
 csv about cats.
 
-## Usage
+## Documentation
+
+The beautiful Marginalia annotated source can be found at:
+
+  http://logaan.github.com/vlad/
+
+## Installation
 
 Once some more work has been done I intend to make vlad available through
 clojars.
