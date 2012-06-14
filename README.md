@@ -25,11 +25,13 @@ and to write meta validations. So you could have:
 
     (def common
       (required :name, :email))
+
     (def signup
       (reduce join
         (required :password)
         (confirm  :password)
         common)
+
     (def update
       common)
 
