@@ -1,10 +1,10 @@
-(ns vlad.validation_types
-  (:use    [vlad.validation_types]
-           [clojure.test])
-  (:import [orm_untangled.validation_tree Join Chain Simple]))
+(ns vlad.test.validation_types
+  (:use vlad.validation_types
+        clojure.test)
+  (:import [vlad.validation_types Join Chain Simple]))
 
-(def fail (Simple. [:foo] (fn [d] true)  "fail"))
-(def other-fail (Simple. [:foo] (fn [d] true)  "other-fail"))
+(def fail (Simple. [:foo] (fn [d] true) "fail"))
+(def other-fail (Simple. [:foo] (fn [d] true) "other-fail"))
 (def pass (Simple. [:foo] (fn [d] false) "pass"))
 (def data {:foo true})
 
