@@ -1,12 +1,11 @@
 (ns vlad.test.validation_types
   (:use vlad.validation_types
-        clojure.test)
-  (:import [vlad.validation_types Join Chain Simple]))
+        clojure.test))
 
-(def fail (Simple. [:foo] (fn [d] true) "fail"))
-(def other-fail (Simple. [:foo] (fn [d] true) "other-fail"))
-(def pass (Simple. [:foo] (fn [d] false) "pass"))
-(def data {:foo true})
+(def fail       (predicate [:foo] (fn [d] true) "fail"))
+(def other-fail (predicate [:foo] (fn [d] true) "other-fail"))
+(def pass       (predicate [:foo] (fn [d] false) "pass"))
+(def data       {:foo true})
 
 (deftest simples
   (are [errors validator] (= errors (validate validator data))
@@ -15,14 +14,14 @@
 
 (deftest composed-simples
   (are [errors validator] (= errors (validate validator data))
-    ["fail" "fail"]        (Join. fail fail)
-    ["fail" "fail" "fail"] (Join. (Join. fail fail) fail)
+    ["fail" "fail"]        (join fail fail)
+    ["fail" "fail" "fail"] (join (join fail fail) fail)
 
-    ["fail"]               (Chain. fail other-fail)
-    ["fail"]               (Chain. (Chain. fail other-fail) other-fail)
+    ["fail"]               (chain fail other-fail)
+    ["fail"]               (chain (chain fail other-fail) other-fail)
 
-    ["fail" "other-fail"]  (Join. (Chain. pass fail) other-fail)
-    ["fail"]               (Chain. (Join. fail other-fail) other-fail)))
+    ["fail" "other-fail"]  (join (chain pass fail) other-fail)
+    ["fail"]               (chain (join fail other-fail) other-fail)))
 
 (def ffail (fn [data] ["fail"]))
 (def fpass (fn [data] []))

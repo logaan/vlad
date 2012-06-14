@@ -18,34 +18,36 @@
 ;;
 (ns vlad.validations
   (:use [vlad.validation_types])
-  (:import [vlad.validation_types Simple Join Chain])
   (:require [clojure.string :as str]))
 
 (defn present
   "Checks that the string found at `selector` is not blank.
   
-  ex. `(validate (present \"Name\" :name) {:name \"Vlad\"})`"
+  Example:
+  
+    (validate (present \"Name\" :name)
+              {:name \"Vlad\"})"
   [name & selector]
-  (Simple. selector str/blank?
-           (format "%s is required." name)))
+  (predicate selector str/blank?
+             (format "%s is required." name)))
 
 (defn length_over 
   "Checks that the `count` of the value found at `selector` is over `size`."
   [size name & selector]
-  (Simple. selector #(> size (count %))
-           (format "%s must be more than %d characters long." name size)))
+  (predicate selector #(> size (count %))
+             (format "%s must be more than %d characters long." name size)))
 
 (defn length_under 
   "Checks that the `count` of the value found at `selector` is under `size`."
   [size name & selector]
-  (Simple. selector #(< size (count %))
-           (format "%s must be less than %d characters long." name size)))
+  (predicate selector #(< size (count %))
+             (format "%s must be less than %d characters long." name size)))
 
 (defn length_in 
   "Checks that the `count` of the value found at `selector` is over `lower` and
   under `upper`. No checking is done that `lower` is lower than `upper`. This
   validator may return multiple errors"
   [lower upper name & selector]
-  (Join.
+  (join
     (length_over  lower name selector)
     (length_under upper name selector)))
