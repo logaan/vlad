@@ -1,4 +1,4 @@
-docs:
+marg:
 	lein marg
 	cp ./docs/uberdoc.html /tmp/uberdoc.html
 	git checkout gh-pages
