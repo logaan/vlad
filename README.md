@@ -5,6 +5,9 @@ purely functional and makes no assumptions about your data. It can be used for
 validating html form data as just as well as it can be used to validate your
 csv about cats.
 
+The beautiful Marginalia annotated source can be found at
+http://logaan.github.com/vlad/
+
 ## Rant
 
 *Please note that the code displayed here is not valid Vlad code*
@@ -59,12 +62,6 @@ their password is the wrong length and that it's required:
 
 And of course all these validations could be run over any data. Whether you're
 pulling it in from a web service, a database or a csv file somewhere.
-
-## Documentation
-
-The beautiful Marginalia annotated source can be found at:
-
-  http://logaan.github.com/vlad/
 
 ## Installation
 
