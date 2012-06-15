@@ -10,7 +10,7 @@
 (defn valid
   "`valid` is a validation that does nothing. It can be safely composed with
   other validations. It is used as the identity value for reducers/monoid
-  functions"
+  functions (Don't panic. You don't need to know what that means to use vlad)."
   [data] [])
 
 (defn child-errors
