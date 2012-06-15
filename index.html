@@ -3040,8 +3040,9 @@ net.brehaut.ClojureTools = (function (SH) {
   validation type knows how to run against some data. Implementations of
   <code>validate</code> should return a vector of errors as strings.</p>
 </td><td class="codes"><pre class="brush: clojure">(defprotocol Validation
-  (validate [self data]))</pre></td></tr><tr><td class="docs"><p>A validation that does nothing. It can be safely composed with other
-  validations. This can be considered the identity value for monoid purposes.</p>
+  (validate [self data]))</pre></td></tr><tr><td class="docs"><p><code>valid</code> is a validation that does nothing. It can be safely composed with
+  other validations. It is used as the identity value for reducers/monoid
+  functions</p>
 </td><td class="codes"><pre class="brush: clojure">(defn valid
   [data] [])</pre></td></tr><tr><td class="docs"><p>Composed validations form a binary tree structure. This structure is
   recursively descended when validating against some data. <code>child-errors</code>
