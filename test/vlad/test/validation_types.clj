@@ -2,18 +2,21 @@
   (:use vlad.validation_types
         clojure.test))
 
-(def fail       (predicate [:foo] (fn [d] true) "fail"))
-(def other-fail (predicate [:foo] (fn [d] true) "other-fail"))
-(def pass       (predicate [:foo] (fn [d] false) "pass"))
-(def data       {:foo true})
+(deftest identities
+  (are [errors validator] (= errors (validate validator nil))
+    [] valid
+    [] (join valid valid)
+    [] (chain valid valid)))
 
-(deftest simples
+(deftest predicates
+  (let [fail       (predicate [:foo] (fn [d] true) "fail")
+        other-fail (predicate [:foo] (fn [d] true) "other-fail")
+        pass       (predicate [:foo] (fn [d] false) "pass")
+        data       {:foo true}]
   (are [errors validator] (= errors (validate validator data))
     ["fail"]               fail
-    []                     pass))
+    []                     pass
 
-(deftest composed-simples
-  (are [errors validator] (= errors (validate validator data))
     ["fail" "fail"]        (join fail fail)
     ["fail" "fail" "fail"] (join (join fail fail) fail)
 
@@ -21,12 +24,12 @@
     ["fail"]               (chain (chain fail other-fail) other-fail)
 
     ["fail" "other-fail"]  (join (chain pass fail) other-fail)
-    ["fail"]               (chain (join fail other-fail) other-fail)))
-
-(def ffail (fn [data] ["fail"]))
-(def fpass (fn [data] []))
+    ["fail"]               (chain (join fail other-fail) other-fail))))
 
 (deftest functions
-  (are [errors validator] (= errors (validate validator data))
-    ["fail"]               ffail
-    []                     fpass))
+  (let [fail (fn [data] ["fail"])
+        pass (fn [data] [])]
+  (are [errors validator] (= errors (validate validator nil))
+    ["fail"]               fail
+    []                     pass)))
+

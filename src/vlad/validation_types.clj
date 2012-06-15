@@ -8,8 +8,9 @@
   (validate [self data]))
 
 (defn valid
-  "A validation that does nothing. It can be safely composed with other
-  validations. This can be considered the identity value for monoid purposes."
+  "`valid` is a validation that does nothing. It can be safely composed with
+  other validations. It is used as the identity value for reducers/monoid
+  functions"
   [data] [])
 
 (defn child-errors
