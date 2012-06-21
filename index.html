@@ -3035,10 +3035,38 @@ net.brehaut.ClojureTools = (function (SH) {
                validations. Vlad is purely functional and makes no assumptions
                about your data. It can be used for validating html form data as
                just as well as it can be used to validate your csv about cats.</p>
-</div><div class="dependencies"><h3>dependencies</h3><table><tr><td class="dep-name">org.clojure/clojure</td><td class="dotted"><hr /></td><td class="dep-version">1.3.0</td></tr></table></div><div class="dependencies"><h3>dev dependencies</h3><table><tr><td class="dep-name">lein-marginalia</td><td class="dotted"><hr /></td><td class="dep-version">0.7.1</td></tr></table></div></td><td class="codes" style="text-align: center; vertical-align: middle;color: #666;padding-right:20px"><br /><br /><br />(this space intentionally left almost blank)</td></tr><tr><td class="docs"><div class="toc"><a name="toc"><h3>namespaces</h3></a><ul><li><a href="#vlad.validation_types">vlad.validation_types</a></li><li><a href="#vlad.validations">vlad.validations</a></li></ul></div></td><td class="codes">&nbsp;</td></tr><tr><td class="docs"><div class="docs-header"><a class="anchor" href="#vlad.validation_types" name="vlad.validation_types"><h1 class="project-name">vlad.validation_types</h1><a class="toc-link" href="#toc">toc</a></a></div></td><td class="codes" /></tr><tr><td class="docs"><p>Here can be found ways to create, compose and execute validations.</p>
+</div><div class="dependencies"><h3>dependencies</h3><table><tr><td class="dep-name">org.clojure/clojure</td><td class="dotted"><hr /></td><td class="dep-version">1.3.0</td></tr></table></div><div class="dependencies"><h3>dev dependencies</h3><table><tr><td class="dep-name">lein-marginalia</td><td class="dotted"><hr /></td><td class="dep-version">0.7.1</td></tr></table></div></td><td class="codes" style="text-align: center; vertical-align: middle;color: #666;padding-right:20px"><br /><br /><br />(this space intentionally left almost blank)</td></tr><tr><td class="docs"><div class="toc"><a name="toc"><h3>namespaces</h3></a><ul><li><a href="#vlad.default_errors">vlad.default_errors</a></li><li><a href="#vlad.validation_types">vlad.validation_types</a></li><li><a href="#vlad.validations">vlad.validations</a></li></ul></div></td><td class="codes">&nbsp;</td></tr><tr><td class="docs"><div class="docs-header"><a class="anchor" href="#vlad.default_errors" name="vlad.default_errors"><h1 class="project-name">vlad.default_errors</h1><a class="toc-link" href="#toc">toc</a></a></div></td><td class="codes" /></tr><tr><td class="docs"><p>Validations return a data structure that gives all information about an
+error. You may find this information does not suit the tastes of your users.</p>
+</td><td class="codes"><pre class="brush: clojure">(ns vlad.default_errors)</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defmulti translate :type)</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defmethod translate :vlad.validations/present
+  [{:keys [name]}]
+  (format &quot;%s is required.&quot; name))</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defmethod translate :vlad.validations/length-over
+  [{:keys [name size]}]
+  (format &quot;%s must be over %s characters long.&quot; name size))</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defmethod translate :vlad.validations/length-under
+  [{:keys [name size]}]
+  (format &quot;%s must be under %s characters long.&quot; name size))</pre></td></tr><tr><td class="docs"><p>Translates a sequence of errors into a map of plain english error messages.
+   Selectors are used as keys.</p>
+
+<p>   Example:</p>
+
+<pre><code>(translate-errors [{
+  :type :vlad.validations/length-under
+  :selector [:password]
+  :name "Password"
+  :size 8}])
+; =&gt; {[:password] "Password must be under 8 characters long."}
+</code></pre>
+</td><td class="codes"><pre class="brush: clojure">(defn translate-errors
+  [errors]
+  (letfn [(translate-with-selector [error]
+            {(:selector error) (translate error)})]
+    (apply merge (map translate-with-selector errors))))</pre></td></tr><tr><td class="spacer docs">&nbsp;</td><td class="codes" /></tr><tr><td class="docs"><div class="docs-header"><a class="anchor" href="#vlad.validation_types" name="vlad.validation_types"><h1 class="project-name">vlad.validation_types</h1><a class="toc-link" href="#toc">toc</a></a></div></td><td class="codes" /></tr><tr><td class="docs"><p>Here you will find ways to create, compose and execute validations.</p>
 </td><td class="codes"><pre class="brush: clojure">(ns vlad.validation_types)</pre></td></tr><tr><td class="docs"><p>The core of vlad is the <code>Validation</code> protocol. It simply requires that your
   validation type knows how to run against some data. Implementations of
-  <code>validate</code> should return a vector of errors as strings.</p>
+  <code>validate</code> should return a sequence of errors as strings.</p>
 </td><td class="codes"><pre class="brush: clojure">(defprotocol Validation
   (validate [self data]))</pre></td></tr><tr><td class="docs"><p><code>valid</code> is a validation that does nothing. It can be safely composed with
   other validations. It is used as the identity value for reducers/monoid
@@ -3049,9 +3077,8 @@ net.brehaut.ClojureTools = (function (SH) {
   validates both branches against the data and concatenates their errors.</p>
 </td><td class="codes"><pre class="brush: clojure">(defn child-errors
   [{:keys [left right]} data]
-  (let [errors (map #(validate % data) [left right])]
-    (reduce concat errors)))</pre></td></tr><tr><td class="docs"><p>Two validations can be composed in a <code>Join</code>. When <code>validate</code> is called their
-error messages will be combined into one vector. You can nest joined
+  (mapcat #(validate % data) [left right]))</pre></td></tr><tr><td class="docs"><p>Two validations can be composed in a <code>Join</code>. When <code>validate</code> is called their
+error messages will be combined into one sequence You can nest joined
 validations and they will be recursively traversed.</p>
 </td><td class="codes"><pre class="brush: clojure">(defrecord Join [left right]
   Validation
@@ -3136,22 +3163,22 @@ validators as normal.</p>
           {:name "Vlad"})
 </code></pre>
 </td><td class="codes"><pre class="brush: clojure">(defn present
-  [name &amp; selector]
+  [name selector]
   (predicate selector str/blank?
-             (format &quot;%s is required.&quot; name)))</pre></td></tr><tr><td class="docs"><p>Checks that the <code>count</code> of the value found at <code>selector</code> is over <code>size</code>.</p>
-</td><td class="codes"><pre class="brush: clojure">(defn length_over 
-  [size name &amp; selector]
+             {:type ::present :name name :selector selector}))</pre></td></tr><tr><td class="docs"><p>Checks that the <code>count</code> of the value found at <code>selector</code> is over <code>size</code>.</p>
+</td><td class="codes"><pre class="brush: clojure">(defn length-over 
+  [size name selector]
   (predicate selector #(&gt; size (count %))
-             (format &quot;%s must be more than %d characters long.&quot; name size)))</pre></td></tr><tr><td class="docs"><p>Checks that the <code>count</code> of the value found at <code>selector</code> is under <code>size</code>.</p>
-</td><td class="codes"><pre class="brush: clojure">(defn length_under 
-  [size name &amp; selector]
+             {:type ::length-over :size size :name name :selector selector}))</pre></td></tr><tr><td class="docs"><p>Checks that the <code>count</code> of the value found at <code>selector</code> is under <code>size</code>.</p>
+</td><td class="codes"><pre class="brush: clojure">(defn length-under 
+  [size name selector]
   (predicate selector #(&lt; size (count %))
-             (format &quot;%s must be less than %d characters long.&quot; name size)))</pre></td></tr><tr><td class="docs"><p>Checks that the <code>count</code> of the value found at <code>selector</code> is over <code>lower</code> and
+             {:type ::length-under :size size :name name :selector selector}))</pre></td></tr><tr><td class="docs"><p>Checks that the <code>count</code> of the value found at <code>selector</code> is over <code>lower</code> and
   under <code>upper</code>. No checking is done that <code>lower</code> is lower than <code>upper</code>. This
   validator may return multiple errors</p>
-</td><td class="codes"><pre class="brush: clojure">(defn length_in 
-  [lower upper name &amp; selector]
+</td><td class="codes"><pre class="brush: clojure">(defn length-in 
+  [lower upper name selector]
   (join
-    (length_over  lower name selector)
-    (length_under upper name selector)))</pre></td></tr><tr><td class="spacer docs">&nbsp;</td><td class="codes" /></tr></table><div class="footer">Generated by <a href="https://github.com/fogus/marginalia">Marginalia</a>.&nbsp;&nbsp;Syntax highlighting provided by Alex Gorbatchev's <a href="http://alexgorbatchev.com/SyntaxHighlighter/">SyntaxHighlighter</a></div><script type="text/javascript">SyntaxHighlighter.defaults['gutter'] = false;
+    (length-over  lower name selector)
+    (length-under upper name selector)))</pre></td></tr><tr><td class="spacer docs">&nbsp;</td><td class="codes" /></tr></table><div class="footer">Generated by <a href="https://github.com/fogus/marginalia">Marginalia</a>.&nbsp;&nbsp;Syntax highlighting provided by Alex Gorbatchev's <a href="http://alexgorbatchev.com/SyntaxHighlighter/">SyntaxHighlighter</a></div><script type="text/javascript">SyntaxHighlighter.defaults['gutter'] = false;
        SyntaxHighlighter.all()</script></body></html>
