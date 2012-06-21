@@ -3072,18 +3072,13 @@ error. You may find this information does not suit the tastes of your users.</p>
   other validations. It is used as the identity value for reducers/monoid
   functions (Don't panic. You don't need to know what that means to use vlad).</p>
 </td><td class="codes"><pre class="brush: clojure">(defn valid
-  [data] [])</pre></td></tr><tr><td class="docs"><p>Composed validations form a binary tree structure. This structure is
-  recursively descended when validating against some data. <code>child-errors</code>
-  validates both branches against the data and concatenates their errors.</p>
-</td><td class="codes"><pre class="brush: clojure">(defn child-errors
-  [{:keys [left right]} data]
-  (mapcat #(validate % data) [left right]))</pre></td></tr><tr><td class="docs"><p>Two validations can be composed in a <code>Join</code>. When <code>validate</code> is called their
+  [data] [])</pre></td></tr><tr><td class="docs"><p>Two validations can be composed in a <code>Join</code>. When <code>validate</code> is called their
 error messages will be combined into one sequence You can nest joined
 validations and they will be recursively traversed.</p>
 </td><td class="codes"><pre class="brush: clojure">(defrecord Join [left right]
   Validation
-  (validate [self data]
-    (child-errors self data)))</pre></td></tr><tr><td class="docs"><p>Example:</p>
+  (validate [{:keys [left right]} data]
+    (mapcat #(validate % data) [left right])))</pre></td></tr><tr><td class="docs"><p>Example:</p>
 
 <pre><code>(join
   (present "Name" :name)
@@ -3093,17 +3088,18 @@ validations and they will be recursively traversed.</p>
   ([] valid)
   ([left] left)
   ([left right] (Join. left right))
-  ([left right &amp; rest] (reduce (Join. left right) rest)))</pre></td></tr><tr><td class="docs"><p><code>Chain</code> can also be using for composing validations. However it will fail
+  ([left right &amp; rest] (reduce (Join. left right) rest)))</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defn unless-pred [pred value fallback]
+  (if (pred value) fallback value))</pre></td></tr><tr><td class="docs"><p><code>Chain</code> can also be using for composing validations. However it will fail
 fast, only returning the first validation if it fails. If the first
 validation failed with multiple errors (ie: you're chaining a <code>Join</code>) then
 all of those errors will still be returned</p>
 </td><td class="codes"><pre class="brush: clojure">(defrecord Chain [left right]
   Validation
-  (validate [self data]
-    (let [first-errors (validate (:left self) data)]
-      (if (empty? first-errors)
-        (validate (:right self) data)
-        first-errors))))</pre></td></tr><tr><td class="docs"><p>Example:</p>
+  (validate [{:keys [left right]} data]
+    (let [left-errors  (validate left  data)
+          right-errors (validate right data)]
+      (if (empty? left-errors) right-errors left-errors))))</pre></td></tr><tr><td class="docs"><p>Example:</p>
 
 <pre><code>(chain
   (present "Password" :password)
