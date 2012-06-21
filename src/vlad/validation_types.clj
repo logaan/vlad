@@ -1,10 +1,10 @@
-;; Here can be found ways to create, compose and execute validations.
+;; Here you will find ways to create, compose and execute validations.
 (ns vlad.validation_types)
 
 (defprotocol Validation
   "The core of vlad is the `Validation` protocol. It simply requires that your
   validation type knows how to run against some data. Implementations of
-  `validate` should return a vector of errors as strings."
+  `validate` should return a sequence of errors as strings."
   (validate [self data]))
 
 (defn valid
@@ -18,11 +18,10 @@
   recursively descended when validating against some data. `child-errors`
   validates both branches against the data and concatenates their errors."
   [{:keys [left right]} data]
-  (let [errors (map #(validate % data) [left right])]
-    (reduce concat errors)))
+  (mapcat #(validate % data) [left right]))
 
 ;; Two validations can be composed in a `Join`. When `validate` is called their
-;; error messages will be combined into one vector. You can nest joined
+;; error messages will be combined into one sequence You can nest joined
 ;; validations and they will be recursively traversed.
 (defrecord Join [left right]
   Validation

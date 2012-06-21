@@ -27,27 +27,27 @@
   
     (validate (present \"Name\" :name)
               {:name \"Vlad\"})"
-  [name & selector]
+  [name selector]
   (predicate selector str/blank?
-             (format "%s is required." name)))
+             {:type ::present :name name :selector selector}))
 
-(defn length_over 
+(defn length-over 
   "Checks that the `count` of the value found at `selector` is over `size`."
-  [size name & selector]
+  [size name selector]
   (predicate selector #(> size (count %))
-             (format "%s must be more than %d characters long." name size)))
+             {:type ::length-over :size size :name name :selector selector}))
 
-(defn length_under 
+(defn length-under 
   "Checks that the `count` of the value found at `selector` is under `size`."
-  [size name & selector]
+  [size name selector]
   (predicate selector #(< size (count %))
-             (format "%s must be less than %d characters long." name size)))
+             {:type ::length-under :size size :name name :selector selector}))
 
-(defn length_in 
+(defn length-in 
   "Checks that the `count` of the value found at `selector` is over `lower` and
   under `upper`. No checking is done that `lower` is lower than `upper`. This
   validator may return multiple errors"
-  [lower upper name & selector]
+  [lower upper name selector]
   (join
-    (length_over  lower name selector)
-    (length_under upper name selector)))
+    (length-over  lower name selector)
+    (length-under upper name selector)))
