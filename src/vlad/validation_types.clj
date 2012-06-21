@@ -13,20 +13,13 @@
   functions (Don't panic. You don't need to know what that means to use vlad)."
   [data] [])
 
-(defn child-errors
-  "Composed validations form a binary tree structure. This structure is
-  recursively descended when validating against some data. `child-errors`
-  validates both branches against the data and concatenates their errors."
-  [{:keys [left right]} data]
-  (mapcat #(validate % data) [left right]))
-
 ;; Two validations can be composed in a `Join`. When `validate` is called their
 ;; error messages will be combined into one sequence You can nest joined
 ;; validations and they will be recursively traversed.
 (defrecord Join [left right]
   Validation
-  (validate [self data]
-    (child-errors self data)))
+  (validate [{:keys [left right]} data]
+    (mapcat #(validate % data) [left right])))
 
 (defn join
   "Example:
@@ -39,17 +32,19 @@
   ([left right] (Join. left right))
   ([left right & rest] (reduce (Join. left right) rest)))
 
+(defn unless-pred [pred value fallback]
+  (if (pred value) fallback value))
+
 ;; `Chain` can also be using for composing validations. However it will fail
 ;; fast, only returning the first validation if it fails. If the first
 ;; validation failed with multiple errors (ie: you're chaining a `Join`) then
 ;; all of those errors will still be returned
 (defrecord Chain [left right]
   Validation
-  (validate [self data]
-    (let [first-errors (validate (:left self) data)]
-      (if (empty? first-errors)
-        (validate (:right self) data)
-        first-errors))))
+  (validate [{:keys [left right]} data]
+    (let [left-errors  (validate left  data)
+          right-errors (validate right data)]
+      (if (empty? left-errors) right-errors left-errors))))
 
 (defn chain
   "Example:
