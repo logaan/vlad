@@ -2,7 +2,10 @@
 ;; error. You may find this information does not suit the tastes of your users.
 (ns vlad.default_errors)
 
-(defmulti translate :type)
+(defmulti translate
+  "The translate function simply takes an error and returns a readable version
+  of it."
+  :type)
 
 (defmethod translate :vlad.validations/present
   [{:keys [name]}]
