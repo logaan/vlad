@@ -46,9 +46,10 @@
 (defrecord Chain [left right]
   Validation
   (validate [self data]
-    (let [errors (child-errors self data)
-          error  (first (filter not-empty errors))]
-      (if (nil? error) [] [error]))))
+    (let [first-errors (validate (:left self) data)]
+      (if (empty? first-errors)
+        (validate (:right self) data)
+        first-errors))))
 
 (defn chain
   "Example:

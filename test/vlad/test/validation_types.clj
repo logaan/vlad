@@ -24,7 +24,7 @@
     ["fail"]               (chain (chain fail other-fail) other-fail)
 
     ["fail" "other-fail"]  (join (chain pass fail) other-fail)
-    ["fail"]               (chain (join fail other-fail) other-fail))))
+    ["fail" "other-fail"]  (chain (join fail other-fail) other-fail))))
 
 (deftest functions
   (let [fail (fn [data] ["fail"])
