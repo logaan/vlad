@@ -1,11 +1,13 @@
 (ns vlad.test.validations
-  (:use clojure.test
+  (:use midje.sweet
         [vlad validations validation_types]))
 
 (def data {:name "Chris"})
 
-(deftest validations-work
-  (are [validator errors ] (= errors (validate validator data))
+(tabular
+  (fact (validate ?validator {:name "Chris"}) => ?errors)
+    ?validator ?errors
+
     (present "Name" [:name])
        []                   
 
@@ -43,5 +45,5 @@
         {:type :vlad.validations/length-under
          :size 4
          :name "Name"
-         :selector [:name]}]))
+         :selector [:name]}])
 

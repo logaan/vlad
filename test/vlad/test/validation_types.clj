@@ -1,19 +1,22 @@
 (ns vlad.test.validation_types
   (:use vlad.validation_types
+        midje.sweet
         clojure.test))
 
-(deftest identities
-  (are [errors validator] (= errors (validate validator nil))
-    [] valid
-    [] (join valid valid)
-    [] (chain valid valid)))
+(defn fail       [data] ["fail"])
+(defn other-fail [data] ["other-fail"])
+(defn pass       [data] [])
 
-(deftest predicates
-  (let [fail       (predicate [:foo] (fn [d] true) "fail")
-        other-fail (predicate [:foo] (fn [d] true) "other-fail")
-        pass       (predicate [:foo] (fn [d] false) "pass")
-        data       {:foo true}]
-  (are [errors validator] (= errors (validate validator data))
+(tabular
+  (fact (validate ?validator nil) => [])
+    ?validator
+    valid
+    (join valid valid)
+    (chain valid valid))
+
+(tabular
+  (fact (validate ?validator {:foo true}) => ?errors)
+    ?errors                ?validator
     ["fail"]               fail
     []                     pass
 
@@ -24,12 +27,5 @@
     ["fail"]               (chain (chain fail other-fail) other-fail)
 
     ["fail" "other-fail"]  (join (chain pass fail) other-fail)
-    ["fail" "other-fail"]  (chain (join fail other-fail) other-fail))))
-
-(deftest functions
-  (let [fail (fn [data] ["fail"])
-        pass (fn [data] [])]
-  (are [errors validator] (= errors (validate validator nil))
-    ["fail"]               fail
-    []                     pass)))
+    ["fail" "other-fail"]  (chain (join fail other-fail) other-fail))
 
