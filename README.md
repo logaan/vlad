@@ -65,8 +65,11 @@ pulling it in from a web service, a database or a csv file somewhere.
 
 ## Installation
 
-Once some more work has been done I intend to make vlad available through
-clojars.
+To use it in your project add to your project.clj:
+
+    :dependencies [[vlad "1.0.0"]]
+
+You can find vlad at https://clojars.org/vlad
 
 ## TODO
 
