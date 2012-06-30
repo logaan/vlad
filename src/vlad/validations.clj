@@ -1,21 +1,3 @@
-;; I aim to implement equivilents to all rails validation methods.
-;;
-;; ## Implemented validations
-;;
-;; * `validates_acceptance_of`
-;; * `validates_confirmation_of`
-;; * `validates_exclusion_of`
-;; * `validates_inclusion_of`
-;; * `validates_length_of`
-;; * `validates_presence_of`
-;; * `validates_size_of`
-;;
-;; ## Outstanding validations
-;;
-;; * `validates_format_of`
-;; * `validates_numericality_of`
-;; * `validates_uniqueness_of`
-;;
 (ns vlad.validations
   (:use [vlad.validation_types])
   (:require [clojure.string :as str]))
