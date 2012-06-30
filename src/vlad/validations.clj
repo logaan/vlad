@@ -2,17 +2,17 @@
 ;;
 ;; ## Implemented validations
 ;;
-;; * `validates_presence_of`
-;; * `validates_length_of`
-;; * `validates_size_of`
 ;; * `validates_acceptance_of`
 ;; * `validates_confirmation_of`
+;; * `validates_exclusion_of`
+;; * `validates_inclusion_of`
+;; * `validates_length_of`
+;; * `validates_presence_of`
+;; * `validates_size_of`
 ;;
 ;; ## Outstanding validations
 ;;
-;; * `validates_exclusion_of`
 ;; * `validates_format_of`
-;; * `validates_inclusion_of`
 ;; * `validates_numericality_of`
 ;; * `validates_uniqueness_of`
 ;;
@@ -51,6 +51,18 @@
   (join
     (length-over  lower name selector)
     (length-under upper name selector)))
+
+(defn one-of
+  "Checks that the value found at `selector` is found within `set`"
+  [set name selector]
+  (predicate selector #(not (contains? set %))
+             {:type ::one-of :set set :name name :selector selector}))
+
+(defn not-of
+  "Checks that the value found at `selector` is not found within `set`"
+  [set name selector]
+  (predicate selector #(contains? set %)
+             {:type ::not-of :set set :name name :selector selector}))
 
 (defn equals-value
   "Checks that the value found at `selector` is equal to the `value` that you
