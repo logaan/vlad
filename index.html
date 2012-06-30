@@ -3037,7 +3037,8 @@ net.brehaut.ClojureTools = (function (SH) {
                just as well as it can be used to validate your csv about cats.</p>
 </div><div class="dependencies"><h3>dependencies</h3><table><tr><td class="dep-name">org.clojure/clojure</td><td class="dotted"><hr /></td><td class="dep-version">1.3.0</td></tr></table></div><div class="dependencies"><h3>dev dependencies</h3><table><tr><td class="dep-name">lein-marginalia</td><td class="dotted"><hr /></td><td class="dep-version">0.7.1</td></tr><tr><td class="dep-name">midje</td><td class="dotted"><hr /></td><td class="dep-version">1.4.0</td></tr><tr><td class="dep-name">com.stuartsierra/lazytest</td><td class="dotted"><hr /></td><td class="dep-version">1.2.3</td></tr></table></div></td><td class="codes" style="text-align: center; vertical-align: middle;color: #666;padding-right:20px"><br /><br /><br />(this space intentionally left almost blank)</td></tr><tr><td class="docs"><div class="toc"><a name="toc"><h3>namespaces</h3></a><ul><li><a href="#vlad.default_errors">vlad.default_errors</a></li><li><a href="#vlad.validation_types">vlad.validation_types</a></li><li><a href="#vlad.validations">vlad.validations</a></li></ul></div></td><td class="codes">&nbsp;</td></tr><tr><td class="docs"><div class="docs-header"><a class="anchor" href="#vlad.default_errors" name="vlad.default_errors"><h1 class="project-name">vlad.default_errors</h1><a class="toc-link" href="#toc">toc</a></a></div></td><td class="codes" /></tr><tr><td class="docs"><p>Validations return a data structure that gives all information about an
 error. You may find this information does not suit the tastes of your users.</p>
-</td><td class="codes"><pre class="brush: clojure">(ns vlad.default_errors)</pre></td></tr><tr><td class="docs"><p>The translate function simply takes an error and returns a readable version
+</td><td class="codes"><pre class="brush: clojure">(ns vlad.default_errors
+  (:require [clojure.string :as s]))</pre></td></tr><tr><td class="docs"><p>The translate function simply takes an error and returns a readable version
   of it.</p>
 </td><td class="codes"><pre class="brush: clojure">(defmulti translate
   :type)</pre></td></tr><tr><td class="docs">
@@ -3049,7 +3050,22 @@ error. You may find this information does not suit the tastes of your users.</p>
   (format &quot;%s must be over %s characters long.&quot; name size))</pre></td></tr><tr><td class="docs">
 </td><td class="codes"><pre class="brush: clojure">(defmethod translate :vlad.validations/length-under
   [{:keys [name size]}]
-  (format &quot;%s must be under %s characters long.&quot; name size))</pre></td></tr><tr><td class="docs"><p>Translates a sequence of errors into a map of plain english error messages.
+  (format &quot;%s must be under %s characters long.&quot; name size))</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defmethod translate :vlad.validations/one-of
+  [{:keys [name set]}]
+  (format &quot;%s must be one of %s.&quot; name (s/join &quot;, &quot; set)))</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defmethod translate :vlad.validations/not-of
+  [{:keys [name set]}]
+  (format &quot;%s must not be one of %s.&quot; name (s/join &quot;, &quot; set)))</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defmethod translate :vlad.validations/equals-value
+  [{:keys [name value]}]
+  (format &quot;%s must be \&quot;%s\&quot;.&quot; name value))</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defmethod translate :vlad.validations/equals-field
+  [{:keys [first-name second-name]}]
+  (format &quot;%s must be the same as %s.&quot; first-name second-name))</pre></td></tr><tr><td class="docs">
+</td><td class="codes"><pre class="brush: clojure">(defmethod translate :vlad.validations/matches
+  [{:keys [name pattern]}]
+  (format &quot;%s must match the pattern %s.&quot; name (.toString pattern)))</pre></td></tr><tr><td class="docs"><p>Translates a sequence of errors into a map of plain english error messages.
    Selectors are used as keys.</p>
 
 <p>   Example:</p>
