@@ -2,10 +2,8 @@
   (:use midje.sweet
         [vlad validations validation_types]))
 
-(def data {:name "Chris"})
-
 (tabular
-  (fact (validate ?validator {:name "Chris"}) => ?errors)
+  (fact (validate ?validator {:name "Chris" :confirm_name "Brad"}) => ?errors)
     ?validator ?errors
 
     (present "Name" [:name])
@@ -45,5 +43,24 @@
         {:type :vlad.validations/length-under
          :size 4
          :name "Name"
-         :selector [:name]}])
+         :selector [:name]}]
+  
+    (equals-value "Chris" "Name" [:name])
+      []
+
+    (equals-value "Maddy" "Name" [:name])
+       [{:type :vlad.validations/equals-value
+         :value "Maddy"
+         :name "Name"
+         :selector [:name]}] 
+
+    (equals-field "Name" [:name] "Name confirmation" [:name])
+      []
+
+    (equals-field "Name" [:name] "Name confirmation" [:confirm_name])
+       [{:type :vlad.validations/equals-field
+         :first-name "Name"
+         :first-selector [:name]
+         :second-name "Name confirmation"
+         :second-selector [:confirm_name]}])
 

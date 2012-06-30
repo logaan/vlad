@@ -5,11 +5,11 @@
 ;; * `validates_presence_of`
 ;; * `validates_length_of`
 ;; * `validates_size_of`
+;; * `validates_acceptance_of`
+;; * `validates_confirmation_of`
 ;;
 ;; ## Outstanding validations
 ;;
-;; * `validates_acceptance_of`
-;; * `validates_confirmation_of`
 ;; * `validates_exclusion_of`
 ;; * `validates_format_of`
 ;; * `validates_inclusion_of`
@@ -51,3 +51,24 @@
   (join
     (length-over  lower name selector)
     (length-under upper name selector)))
+
+(defn equals-value
+  "Checks that the value found at `selector` is equal to the `value` that you
+  provide."
+  [value name selector]
+  (predicate selector #(not (= value %))
+             {:type ::equals-value :value value :name name :selector selector}))
+
+(defn equals-field
+  "Checks that the values found at each of your selectors are equal to each
+  other"
+  [first-name first-selector second-name second-selector]
+  (fn [data]
+    (let [first-value  (get-in data first-selector)
+          second-value (get-in data second-selector)]
+      (if (= first-value second-value)
+          []
+          [{:type ::equals-field
+            :first-name first-name   :first-selector first-selector
+            :second-name second-name :second-selector second-selector}]))))
+

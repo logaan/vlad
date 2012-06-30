@@ -68,6 +68,16 @@ pulling it in from a web service, a database or a csv file somewhere.
 Once some more work has been done I intend to make vlad available through
 clojars.
 
+## TODO
+
+* The predicate checks seem to be backwards. Should they not return true to
+  represent validity?
+* It would be quite nice to have a method that wraps errors up in lists and
+  nil values in empty lists.
+* It would also be quite nice to auto generate the error objects from the
+  method signatures as they seem to be identicle. 
+* equals-value and equals-field are terrible names.
+
 ## License
 
 Copyright © 2012 Logan Campbell
