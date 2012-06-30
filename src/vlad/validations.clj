@@ -84,3 +84,12 @@
             :first-name first-name   :first-selector first-selector
             :second-name second-name :second-selector second-selector}]))))
 
+(defn matches
+  "Checks that the value found at `selector` is a regex match for `pattern`.
+  This uses clojure's `re-matches` function which may not behave as you expect.
+  Your pattern will have to match the whole string found at `selector` to count
+  as a match."
+  [pattern name selector]
+  (predicate selector #(nil? (re-matches pattern %))
+             {:type ::matches :pattern pattern :name name :selector selector}))
+

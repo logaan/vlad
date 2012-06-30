@@ -1,5 +1,5 @@
 (ns vlad.test.validations
-  (:use [midje.sweet :only [tabular fact]]
+  (:use [midje.sweet :only [tabular fact just contains]]
         [vlad validations validation_types]))
 
 (tabular
@@ -80,5 +80,13 @@
     :first-name "Name"
     :first-selector [:name]
     :second-name "Name confirmation"
-    :second-selector [:confirm_name]}])
+    :second-selector [:confirm_name]}]
+  
+  (matches #"..ris" "Name" [:name])
+  []
+  
+  (matches #"andy" "Name" [:name])
+  (just [(contains {:type :vlad.validations/matches
+                              :name "Name"
+                              :selector [:name]})]))
 
