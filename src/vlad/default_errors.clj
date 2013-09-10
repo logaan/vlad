@@ -3,7 +3,11 @@
 (ns vlad.default_errors
   (:require [clojure.string :as s]))
 
-(defn assign-name [errors selectors-to-names]
+(defn assign-name
+  "`translate` expects each field to have a human readable name. `assign-name`
+  takes a collection of errors and a map of selectors to names and will return
+  the errors with names inserted."
+  [errors selectors-to-names]
   (map #(assoc % :name (selectors-to-names (:selector %))) errors))
 
 (defmulti translate
