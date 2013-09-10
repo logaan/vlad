@@ -6,7 +6,8 @@
   :url "https://github.com/logaan/vlad"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :dependencies [[org.clojure/clojure "1.5.1"]]
+  :dependencies [[org.clojure/clojure "1.5.1"]
+                 [potemkin "0.3.3"]]
   :profiles {:dev {:source-paths  ["dev"]
                    :dependencies [[lein-marginalia "0.7.1"]
                                   [midje "1.5.1"]
