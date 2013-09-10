@@ -12,3 +12,4 @@ pom.xml
 *.swp
 /docs
 *.un~
+/.lein-repl-history
