@@ -1,6 +1,8 @@
 (ns vlad.test.default_errors
   (:use vlad.default_errors
-        midje.sweet))
+        midje.sweet)
+  (:require [vlad.validation_types :as vt]
+            [vlad.validations :as v]))
 
 (tabular
   (fact (translate-errors ?errors) => ?translations)
@@ -28,4 +30,8 @@
 
   [{:type :vlad.validations/matches :name "Username" :selector [:username] :pattern #"\w+"}]
   {[:username] "Username must match the pattern \\w+."})
+
+(fact (assign-name (vt/validate (v/present [:foo]) {})
+             {[:foo] "Foozle"})
+      => [{:name "Foozle" :type :vlad.validations/present :selector [:foo]}])
 

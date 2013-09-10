@@ -3,6 +3,9 @@
 (ns vlad.default_errors
   (:require [clojure.string :as s]))
 
+(defn assign-name [errors selectors-to-names]
+  (map #(assoc % :name (selectors-to-names (:selector %))) errors))
+
 (defmulti translate
   "The translate function simply takes an error and returns a readable version
   of it."
