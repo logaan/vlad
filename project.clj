@@ -6,8 +6,10 @@
   :url "https://github.com/logaan/vlad"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :dependencies [[org.clojure/clojure "1.3.0"]]
-  :dev-dependencies [[lein-marginalia "0.7.1"]
-                     [midje "1.4.0"]
-                     [com.stuartsierra/lazytest "1.2.3"]]
+  :dependencies [[org.clojure/clojure "1.5.1"]]
+  :profiles {:dev {:dependencies [[lein-marginalia "0.7.1"]
+                                  [midje "1.5.1"]
+                                  [com.stuartsierra/lazytest "1.2.3"]
+                                  [clj-ns-browser "1.2.0"]]}}
   :repositories {"stuartsierra-releases" "http://stuartsierra.com/maven2"})
+
