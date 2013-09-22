@@ -24,7 +24,7 @@ redundant error messages.
 
 ```clojure
 (ns vlad.test.readme
-  (:use vlad))
+  (:require [vlad :refer :all]))
 
 (def common
   (join (present [:name])
@@ -64,7 +64,7 @@ convenience.
 (midje/fact
   (-> (validate signup {:password "!"})
       (assign-name english-field-names)
-      (translate-errors english-translate))
+      (translate-errors english-translation))
 
   => {[:password] ["Password must be over 6 characters long."
                    "Password must match the pattern [a-zA-Z]."
@@ -78,9 +78,9 @@ convenience.
    [:password]     "密码"
    [:confirmation] "确认密码"})
 
-(defmulti chinese-translate :type)
+(defmulti chinese-translation :type)
 
-(defmethod chinese-translate :vlad.validations/present
+(defmethod chinese-translation :vlad.validations/present
   [{:keys [name]}]
   (format "请输入%s" name))
 
@@ -89,7 +89,7 @@ convenience.
 (midje/fact
   (-> (validate update {:name "Rich"})
       (assign-name chinese-field-names)
-      (translate-errors chinese-translate))
+      (translate-errors chinese-translation))
 
   => {[:email] ["请输入邮箱"]})
 ```
