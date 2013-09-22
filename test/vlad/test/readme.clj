@@ -46,7 +46,7 @@
 
 (defmethod chinese-translate :vlad.validations/present
   [{:keys [name]}]
-  (format "必须填写%s" name))
+  (format "请输入%s" name))
 
 ; Other validation translations go here.
 

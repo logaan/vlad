@@ -80,7 +80,7 @@ convenience.
 
 (defmethod chinese-translate :vlad.validations/present
   [{:keys [name]}]
-  (format "必须填写%s" name))
+  (format "请输入%s" name))
 
 ; Other validation translations go here.
 
@@ -89,7 +89,7 @@ convenience.
       (assign-name chinese-field-names)
       (translate-errors chinese-translate))
 
-  => {[:email] ["必须填写邮箱"]})
+  => {[:email] ["请输入邮箱"]})
 ```
 
 ## A simple example

@@ -1,5 +1,5 @@
 doc:
-	lein marg
+	lein with-profile doc marg
 	cp ./docs/uberdoc.html /tmp/uberdoc.html
 	git checkout gh-pages
 	cp /tmp/uberdoc.html ./index.html
