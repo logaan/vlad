@@ -59,15 +59,16 @@ convenience.
    [:password]     "Password"
    [:confirmation] "Password Confirmation"})
 
-(-> (validate signup {:password "!"})
-  (assign-name english-field-names)
-  (translate-errors english-translate))
+(midje/fact
+  (-> (validate signup {:password "!"})
+      (assign-name english-field-names)
+      (translate-errors english-translate))
 
-;  {[:password] ["Password must be over 6 characters long."
-;                "Password must match the pattern [a-zA-Z]."
-;                "Password must match the pattern [0-9]."],
-;   [:email]    ["Email Address is required."],
-;   [:name]     ["Full Name is required."]}
+  => {[:password] ["Password must be over 6 characters long."
+                   "Password must match the pattern [a-zA-Z]."
+                   "Password must match the pattern [0-9]."],
+      [:email]    ["Email Address is required."],
+      [:name]     ["Full Name is required."]})
 
 (def chinese-field-names
   {[:name]         "姓名"
@@ -79,15 +80,16 @@ convenience.
 
 (defmethod chinese-translate :vlad.validations/present
   [{:keys [name]}]
-  (format "%s是必需的。" name))
+  (format "必须填写%s" name))
 
 ; Other validation translations go here.
 
-(-> (validate update {:name "Rich"})
-    (assign-name chinese-field-names)
-    (translate-errors chinese-translate))
+(midje/fact
+  (-> (validate update {:name "Rich"})
+      (assign-name chinese-field-names)
+      (translate-errors chinese-translate))
 
-; {[:email] ["邮箱是必需的。"]}
+  => {[:email] ["必须填写邮箱"]})
 ```
 
 ## A simple example
