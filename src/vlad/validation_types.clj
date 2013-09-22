@@ -32,9 +32,6 @@
   ([left right] (Join. left right))
   ([left right & rest] (reduce (Join. left right) rest)))
 
-(defn unless-pred [pred value fallback]
-  (if (pred value) fallback value))
-
 ;; `Chain` can also be using for composing validations. However it will fail
 ;; fast, only returning the first validation if it fails. If the first
 ;; validation failed with multiple errors (ie: you're chaining a `Join`) then
