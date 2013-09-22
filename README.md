@@ -20,22 +20,24 @@ a validation that checks each of it's arguments. `chain` will stop checking
 once the first validation fails. This helps avoid overwhelming your users with
 redundant error messages.
 
-    (def common
-      (join (present [:name])
-            (present [:email])))
+```clojure
+(def common
+  (join (present [:name])
+        (present [:email])))
 
-    (def password
-      (chain (present [:password]
-             (join (length-in 6 128   [:password])
-                   (match #"[a-zA-Z]" [:password])
-                   (match #"[0-9]"    [:password]))
-             (equals-field [:password] [:confirmation]))))
+(def password
+  (chain (present [:password]
+         (join (length-in 6 128   [:password])
+               (match #"[a-zA-Z]" [:password])
+               (match #"[0-9]"    [:password]))
+         (equals-field [:password] [:confirmation]))))
 
-    (def signup
-      (join common password)
+(def signup
+  (join common password)
 
-    (def update
-      common)
+(def update
+  common)
+```
 
 And of course all these validations could be run over any data. Whether you're
 pulling it in from a web service, a database or a csv file somewhere.
