@@ -1,6 +1,6 @@
 (ns vlad.test.validations
   (:use [midje.sweet :only [tabular fact just contains]]
-        [vlad validations validation_types]))
+        [vlad validations validation-types]))
 
 (tabular
   (fact (validate ?validator {:name "Chris" :confirm_name "Brad"}) => ?errors)

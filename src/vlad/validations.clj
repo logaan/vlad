@@ -1,5 +1,5 @@
 (ns vlad.validations
-  (:use [vlad.validation_types])
+  (:use [vlad.validation-types])
   (:require [clojure.string :as str]))
 
 (defn present

@@ -1,7 +1,7 @@
-(ns vlad.test.default_errors
-  (:use vlad.default_errors
+(ns vlad.test.default-errors
+  (:use vlad.default-errors
         midje.sweet)
-  (:require [vlad.validation_types :as vt]
+  (:require [vlad.validation-types :as vt]
             [vlad.validations :as v]))
 
 (tabular

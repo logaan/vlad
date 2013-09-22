@@ -1,5 +1,5 @@
 ;; Here you will find ways to create, compose and execute validations.
-(ns vlad.validation_types)
+(ns vlad.validation-types)
 
 (defprotocol Validation
   "The core of vlad is the `Validation` protocol. It simply requires that your
@@ -30,7 +30,7 @@
   ([] valid)
   ([left] left)
   ([left right] (Join. left right))
-  ([left right & rest] (reduce (Join. left right) rest)))
+  ([left right & validations] (reduce #(Join. %1 %2) (Join. left right) validations)))
 
 ;; `Chain` can also be using for composing validations. However it will fail
 ;; fast, only returning the first validation if it fails. If the first
@@ -52,7 +52,7 @@
   ([] valid)
   ([left] left)
   ([left right] (Chain. left right))
-  ([left right & rest] (reduce (Chain. left right) rest)))
+  ([left right & validations] (reduce #(Chain. %1 %2) (Chain. left right) validations)) )
 
 ;; Predicates are simple functions that take some data and return a boolean
 ;; value. They're ideal for use as validators and so `Predicate` exists to make

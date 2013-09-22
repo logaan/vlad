@@ -1,5 +1,5 @@
 (ns vlad
-  (:require [vlad validations validation_types]
+  (:require [vlad validations validation-types default-errors]
             [potemkin :refer :all]))
 
 (import-vars
@@ -13,8 +13,12 @@
    equals-value
    equals-field
    matches]
-  [vlad.validation_types
+  [vlad.validation-types
    join
    chain
    predicate
-   validate])
+   validate]
+  [vlad.default-errors
+   assign-name
+   english-translate
+   translate-errors])

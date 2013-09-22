@@ -1,5 +1,5 @@
-(ns vlad.test.validation_types
-  (:use vlad.validation_types
+(ns vlad.test.validation-types
+  (:use vlad.validation-types
         midje.sweet
         clojure.test))
 
