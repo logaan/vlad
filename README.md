@@ -9,9 +9,11 @@ Those coming from a Ruby on Rails background will be famliar with validations
 poluted with conditional statements and models poluted with virtual attributes.
 Vlad aims to avoid this mess.
 
-To use vlad add the following to your `project.clj` `:dependencies`:
+To use vlad add the following to your `project.clj` dependencies:
 
     [vlad "1.0.0"]
+
+API Docs: <http://logaan.github.io/vlad/vlad.html>
 
 ## Composition
 
