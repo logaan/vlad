@@ -120,12 +120,23 @@ you to specify human readable field names up front. Instead these concerns are
 taken care of as transformations of the raw error data. This decoupling enables
 localisation and contextualised field names.
 
-## Further reading
+## Alternatives
 
-You can find vlad at https://clojars.org/vlad
+There are 7 validation libraries up on [Clojure Toolbox]
+(http://www.clojure-toolbox.com/). I believe vlad to be the simplest of the
+lot. It differs from most other's in the following ways:
 
-The beautiful Marginalia annotated source can be found at
-http://logaan.github.com/vlad/
+* Validations can be composed. Fail fast composition (`chain` in vlad) is
+  missing from all libraries I saw. This runs the risk of presenting your users
+  with a page full of redundant errors.
+* Validations are not tied to any particular data type. They just need to
+  implement the `vlad.validation-types/Validation` protocol. A default
+  implementation has been made for `clojure.lang.IFn`.
+* Error messages are not tied to validations. You can define your validation
+  rules once and then translate them in many different ways. Or not at all if
+  you choose.
+* Vlad is not tied to the web. It is suitable for more than just form data
+  processing. It is also not tied to any web framework.
 
 ## TODO
 
