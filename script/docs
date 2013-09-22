@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+lein with-profile doc doc
+
+cd ~/hacking/jekyll/logaan.github.io/ && \
+rm -r vlad && \
+cp -R ~/hacking/clojure/vlad/doc vlad && \
+git add . && \
+git commit -avm "updated vlad docs" && \
+git push origin master
