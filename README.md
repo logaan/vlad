@@ -44,8 +44,8 @@ pulling it in from a web service, a database or a csv file somewhere.
 
 ## A simple example
 
-Say you have an application with user accounts. Lets say information about
-users is collected from three places:
+Say you have an application with user accounts and information about users is
+collected from three places:
 
 - Bulk import of users from a legacy system
   - No passwords are present in the data
