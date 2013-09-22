@@ -61,18 +61,19 @@
 ;; value. They're ideal for use as validators and so `Predicate` exists to make
 ;; wrapping them up easy. All that's needed to turn a predicate into a
 ;; validator is a selector (for drilling down into data) and an error message.
-(defrecord Predicate [selector predicate message]
+(defrecord Predicate [selector predicate information]
   Validation
-  (validate [{:keys [selector predicate message]} data]
+  (validate [{:keys [selector predicate information]} data]
     (if (predicate (get-in data (flatten selector)))
-      [message] [])))
+      [(assoc information :selector selector)] [])))
 
 (defn predicate
   "Example:
 
-    (predicate :name str/blank? \"Name is required.\")"
-  [selector predicate message]
-  (Predicate. selector predicate message))
+    (predicate selector #(> size (count %))
+               {:type ::length-over :size size})"
+  [selector predicate information]
+  (Predicate. selector predicate information))
 
 ;; The most powerful form of validator is simply a function that takes some
 ;; data and returns an array of errors. It can be composed with all other
