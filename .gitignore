@@ -10,6 +10,6 @@ pom.xml
 .lein-plugins
 .DS_Store
 *.swp
-/docs
+/doc
 *.un~
 /.lein-repl-history
