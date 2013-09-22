@@ -92,34 +92,6 @@ convenience.
   => {[:email] ["请输入邮箱"]})
 ```
 
-## A simple example
-
-Say you have an application with user accounts and information about users is
-collected from three places:
-
-- Bulk import of users from a legacy system
-  - No passwords are present in the data
-  - Users will be emailed asking them to choose a password
-- A user manually signing up
-  - Password and password confirmation must be filled in and must match
-- A user editing their account details
-  - Blank password and password confirmation fields are provided to the user
-  - They may be used to change the password, but are not required
-  - If they are filled in then they must match
-
-And of course passwords will not be stored in the database. Instead a hashed
-version of the password will be used.
-
-From this simple example we can see that it's not appropriate to have
-validations tied to our persistance model. Firstly because our input data does
-not match our persistance and secondly because our validation rules are not
-consistent.
-
-Vlad does not tie validations to any specific error message. Nor does it expect
-you to specify human readable field names up front. Instead these concerns are
-taken care of as transformations of the raw error data. This decoupling enables
-localisation and contextualised field names.
-
 ## Alternatives
 
 There are 7 validation libraries up on [Clojure Toolbox]
@@ -132,9 +104,9 @@ lot. It differs from most other's in the following ways:
 * Validations are not tied to any particular data type. They just need to
   implement the `vlad.validation-types/Validation` protocol. A default
   implementation has been made for `clojure.lang.IFn`.
-* Error messages are not tied to validations. You can define your validation
-  rules once and then translate them in many different ways. Or not at all if
-  you choose.
+* Neither field names nor error messages are tied to validations. You can
+  define your validation rules once and then translate them in many different
+  ways. Or not at all if you choose.
 * Vlad is not tied to the web. It is suitable for more than just form data
   processing. It is also not tied to any web framework.
 
