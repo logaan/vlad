@@ -110,16 +110,6 @@ lot. It differs from most other's in the following ways:
 * Vlad is not tied to the web. It is suitable for more than just form data
   processing. It is also not tied to any web framework.
 
-## TODO
-
-* The predicate checks seem to be backwards. Should they not return true to
-  represent validity?
-* It would be quite nice to have a method that wraps errors up in lists and
-  nil values in empty lists.
-* It would also be quite nice to auto generate the error objects from the
-  method signatures as they seem to be identicle. 
-* equals-value and equals-field are terrible names.
-
 ## License
 
 Copyright © 2012 Logan Campbell
