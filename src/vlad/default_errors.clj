@@ -10,40 +10,39 @@
   [errors selectors-to-names]
   (map #(assoc % :name (selectors-to-names (:selector %))) errors))
 
-(defmulti english-translate
-  "The translate function simply takes an error and returns a readable version
-  of it."
+(defmulti english-translation
+  "Takes an error and returns a human readable version of it."
   :type)
 
-(defmethod english-translate :vlad.validations/present
+(defmethod english-translation :vlad.validations/present
   [{:keys [name]}]
   (format "%s is required." name))
 
-(defmethod english-translate :vlad.validations/length-over
+(defmethod english-translation :vlad.validations/length-over
   [{:keys [name size]}]
   (format "%s must be over %s characters long." name size))
 
-(defmethod english-translate :vlad.validations/length-under
+(defmethod english-translation :vlad.validations/length-under
   [{:keys [name size]}]
   (format "%s must be under %s characters long." name size))
 
-(defmethod english-translate :vlad.validations/one-of
+(defmethod english-translation :vlad.validations/one-of
   [{:keys [name set]}]
   (format "%s must be one of %s." name (s/join ", " set)))
 
-(defmethod english-translate :vlad.validations/not-of
+(defmethod english-translation :vlad.validations/not-of
   [{:keys [name set]}]
   (format "%s must not be one of %s." name (s/join ", " set)))
 
-(defmethod english-translate :vlad.validations/equals-value
+(defmethod english-translation :vlad.validations/equals-value
   [{:keys [name value]}]
   (format "%s must be \"%s\"." name value))
 
-(defmethod english-translate :vlad.validations/equals-field
+(defmethod english-translation :vlad.validations/equals-field
   [{:keys [first-name second-name]}]
   (format "%s must be the same as %s." first-name second-name))
 
-(defmethod english-translate :vlad.validations/matches
+(defmethod english-translation :vlad.validations/matches
   [{:keys [name pattern]}]
   (format "%s must match the pattern %s." name (.toString pattern)))
 
@@ -59,10 +58,10 @@
       :name \"Password\"
       :size 8}])
     ; => {[:password] \"Password must be under 8 characters long.\"}"
-  [errors translate]
+  [errors translation]
   (reduce (fn [output-map {:keys [selector] :as error}]
             (let [existing-errors (get output-map selector [])
-                  new-errors      (conj existing-errors (translate error))]
+                  new-errors      (conj existing-errors (translation error))]
               (assoc output-map selector new-errors)))
           {} errors))
 

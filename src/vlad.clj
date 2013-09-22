@@ -20,5 +20,5 @@
    validate]
   [vlad.default-errors
    assign-name
-   english-translate
+   english-translation
    translate-errors])
