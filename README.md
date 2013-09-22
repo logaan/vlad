@@ -1,75 +1,79 @@
 # vlad
 
 Vlad is an attempt at providing convenient and simple validations. Vlad is
-purely functional and makes no assumptions about your data. It can be used for
-validating html form data as just as well as it can be used to validate your
+purely functional. It makes no assumptions about your data. It can be used for
+validating html post data just as well as it can be used to validate your
 csv about cats.
 
-The beautiful Marginalia annotated source can be found at
-http://logaan.github.com/vlad/
-
-## Rant
-
-*Please note that the code displayed here is not valid Vlad code*
-
-Validations don't belong on the model. It's quite a common case that you've got
-different requirements for what counts as valid data depending on where it's
-coming from. Like needing a password to be input on account creation, storing
-it in a virtual field and validating against it but then storing the encrypted
-password in another field. When you come to edit your account details you're
-most likely not going to need the password to be enterted again. Instead I
-think that validations need to be thought of as being more closely tied to
-forms (or other input methods) or by themselves.
-
-If we have validations sitting by themselves we're also able to compose them
-and to write meta validations. So you could have:
-
-### Composition
-
-    (def common
-      (required :name, :email))
-
-    (def signup
-      (reduce join
-        (required :password)
-        (confirm  :password)
-        common)
-
-    (def update
-      common)
-
-### Meta
-
-    (def standard-signup
-      all-fields-required   ; makes sure the data has no nil values
-      no-curse-words        ; keep things polite across all fields
-      email-fields          ; expects fields with email in the name to be emails
-      password-fields)      ; ditto for passwords
-
-Once you've introduced the idea of composing validations you can even have
-different kinds of composition. Perhaps you want to avoid overwhelming users
-with validation errors and instead want to cater for the common cases and only
-present the edge cases if they crop up. There's not much point telling someone
-their password is the wrong length and that it's required:
-
-    (def password
-      (chain
-        required
-        (reduce join
-          (length :gt 6 :lt 128)
-          (match #"[a-zA-Z]")
-          (match #"[0-9]"))))
-
-And of course all these validations could be run over any data. Whether you're
-pulling it in from a web service, a database or a csv file somewhere.
-
-## Installation
+Those coming from a Ruby on Rails background will be famliar with validations
+poluted with conditional statements and models poluted with virtual attributes.
+Vlad aims to avoid this mess.
 
 To use it in your project add to your project.clj:
 
     :dependencies [[vlad "1.0.0"]]
 
+## Composition
+
+Vlad lets you build complex validations through composition. `join` will return
+a validation that checks each of it's arguments. `chain` will stop checking
+once the first validation fails. This helps avoid overwhelming your users with
+redundant error messages.
+
+    (def common
+      (join (present [:name])
+            (present [:email])))
+
+    (def password
+      (chain (present [:password]
+             (join (length-in 6 128   [:password])
+                   (match #"[a-zA-Z]" [:password])
+                   (match #"[0-9]"    [:password]))
+             (equals-field [:password] [:confirmation]))))
+
+    (def signup
+      (join common password)
+
+    (def update
+      common)
+
+And of course all these validations could be run over any data. Whether you're
+pulling it in from a web service, a database or a csv file somewhere.
+
+## A simple example
+
+Say you have an application with user accounts. Lets say information about
+users is collected from three places:
+
+- Bulk import of users from a legacy system
+  - No passwords are present in the data
+  - Users will be emailed asking them to choose a password
+- A user manually signing up
+  - Password and password confirmation must be filled in and must match
+- A user editing their account details
+  - Blank password and password confirmation fields are provided to the user
+  - They may be used to change the password, but are not required
+  - If they are filled in then they must match
+
+And of course passwords will not be stored in the database. Instead a hashed
+version of the password will be used.
+
+From this simple example we can see that it's not appropriate to have
+validations tied to our persistance model. Firstly because our input data does
+not match our persistance and secondly because our validation rules are not
+consistent.
+
+Vlad does not tie validations to any specific error message. Nor does it expect
+you to specify human readable field names up front. Instead these concerns are
+taken care of as transformations of the raw error data. This decoupling enables
+localisation and contextualised field names.
+
+## Further reading
+
 You can find vlad at https://clojars.org/vlad
+
+The beautiful Marginalia annotated source can be found at
+http://logaan.github.com/vlad/
 
 ## TODO
 
@@ -86,3 +90,4 @@ You can find vlad at https://clojars.org/vlad
 Copyright © 2012 Logan Campbell
 
 Distributed under the Eclipse Public License, the same as Clojure.
+
