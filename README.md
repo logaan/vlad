@@ -21,6 +21,8 @@ once the first validation fails. This helps avoid overwhelming your users with
 redundant error messages.
 
 ```clojure
+(use 'vlad)
+
 (def common
   (join (present [:name])
         (present [:email])))
