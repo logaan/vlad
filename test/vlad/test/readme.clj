@@ -3,21 +3,9 @@
             [midje.sweet :refer [fact]]))
 
 ; Basics
-
-(let [data       {:name "Logan Campbell"}
-      errors     (validate (present [:age]) data)
-      named      (assign-name errors {[:name] "Name" [:age] "Age"})
-      translated (translate-errors named english-translation)]
-
-  (fact
-    errors => [{:type :vlad.validations/present
-                :selector [:age]}]
-
-    named => [{:type :vlad.validations/present
-               :name "Age"
-               :selector [:age]}]
-
-    translated => {[:age] ["Age is required."]}))
+(fact (validate (present [:age]) {:name "Logan Campbell"})
+      => [{:type :vlad.validations/present
+           :selector [:age]}])
 
 ; Composition
 (def common
