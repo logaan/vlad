@@ -22,7 +22,13 @@ API Docs: <http://logaan.github.io/vlad/vlad.html>
   (:require [vlad :refer :all]
             [midje.sweet :refer [fact]]))
 
-(fact (validate (present [:age]) {:name "Logan"})
+(def validation
+  (present [:age]))
+
+(def data
+  {:name "Logan Campbell"})
+
+(fact (validate validation data)
       => [{:type :vlad.validations/present
            :selector [:age]}])
 ```

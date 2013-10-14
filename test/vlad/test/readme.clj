@@ -3,7 +3,13 @@
             [midje.sweet :refer [fact]]))
 
 ; Basics
-(fact (validate (present [:age]) {:name "Logan Campbell"})
+(def validation
+  (present [:age]))
+
+(def data
+  {:name "Logan Campbell"})
+
+(fact (validate validation data)
       => [{:type :vlad.validations/present
            :selector [:age]}])
 
