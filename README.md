@@ -21,9 +21,10 @@ API Docs: <http://logaan.github.io/vlad/vlad.html>
 (ns vlad.test.readme
   (:require [vlad :refer :all]))
 
-(validate (present [:age]) {:name "Logan"})
-; => [{:type :vlad.validations/present
-       :selector [:age]}]
+(midje/fact
+  (validate (present [:age]) {:name "Logan"})
+  => [{:type :vlad.validations/present
+       :selector [:age]}])
 ```
 
 ## Composition

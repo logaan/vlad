@@ -3,7 +3,10 @@
             [midje.sweet :as midje]))
 
 ; Basics
-(validate (present [:age]) {:name "Logan"})
+(midje/fact
+  (validate (present [:age]) {:name "Logan"})
+  => [{:type :vlad.validations/present
+       :selector [:age]}])
 
 (def common
   (join (present [:name])
