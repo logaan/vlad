@@ -19,12 +19,13 @@ API Docs: <http://logaan.github.io/vlad/vlad.html>
 
 ```clojure
 (ns vlad.test.readme
-  (:require [vlad :refer :all]))
+  (:require [vlad :refer :all]
+            [midje.sweet :refer [fact]]))
 
-(midje/fact
-  (validate (present [:age]) {:name "Logan"})
-  => [{:type :vlad.validations/present
-       :selector [:age]}])
+(fact (validate (present [:age]) {:name "Logan"})
+      => [{:type :vlad.validations/present
+           :selector [:age]}])
+
 ```
 
 ## Composition
@@ -51,6 +52,10 @@ redundant error messages.
 
 (def update
   common)
+
+(fact (validate signup {:name "Logan Campbell"})
+      => '({:selector [:email],    :type :vlad.validations/present}
+           {:selector [:password], :type :vlad.validations/present}))
 ```
 
 And of course all these validations could be run over any data. Whether you're

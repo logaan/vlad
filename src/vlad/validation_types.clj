@@ -40,9 +40,8 @@
 (defrecord Chain [left right]
   Validation
   (validate [{:keys [left right]} data]
-    (let [left-errors  (validate left  data)
-          right-errors (validate right data)]
-      (if (empty? left-errors) right-errors left-errors))))
+    (let [left-errors (validate left  data)]
+      (if (empty? left-errors) (validate right data) left-errors))))
 
 (defn chain
   "Example:
