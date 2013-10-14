@@ -4,7 +4,8 @@
 (defprotocol Validation
   "The core of vlad is the `Validation` protocol. It simply requires that your
   validation type knows how to run against some data. Implementations of
-  `validate` should return a sequence of errors as strings."
+  `validate` should return a sequence of errors. An error may be anything but
+  is generally of the form `{:type ::something :some-extra-data 123}`."
   (validate [self data]))
 
 (defn valid

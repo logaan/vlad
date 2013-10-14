@@ -2,6 +2,9 @@
   (:require [vlad :refer :all]
             [midje.sweet :as midje]))
 
+; Basics
+(validate (present [:age]) {:name "Logan"})
+
 (def common
   (join (present [:name])
         (present [:email])))

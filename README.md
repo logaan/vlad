@@ -15,6 +15,17 @@ To use vlad add the following to your `project.clj` dependencies:
 
 API Docs: <http://logaan.github.io/vlad/vlad.html>
 
+## Basics
+
+```clojure
+(ns vlad.test.readme
+  (:require [vlad :refer :all]))
+
+(validate (present [:age]) {:name "Logan"})
+; => [{:type :vlad.validations/present
+       :selector [:age]}]
+```
+
 ## Composition
 
 Vlad lets you build complex validations through composition. `join` will return
@@ -23,9 +34,6 @@ once the first validation fails. This helps avoid overwhelming your users with
 redundant error messages.
 
 ```clojure
-(ns vlad.test.readme
-  (:require [vlad :refer :all]))
-
 (def common
   (join (present [:name])
         (present [:email])))

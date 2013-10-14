@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 
-lein with-profile doc doc
+VLAD_PATH=`pwd`
 
 cd ~/hacking/jekyll/logaan.github.io/ && \
-rm -r vlad && \
-cp -R ~/hacking/clojure/vlad/doc vlad && \
+rm -r vlad
+
+cd ~/hacking/jekyll/logaan.github.io/ && \
+cp -R $VLAD_PATH/doc vlad && \
 git add . && \
 git commit -avm "updated vlad docs" && \
 git push origin master
