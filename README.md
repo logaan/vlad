@@ -25,7 +25,6 @@ API Docs: <http://logaan.github.io/vlad/vlad.html>
 (fact (validate (present [:age]) {:name "Logan"})
       => [{:type :vlad.validations/present
            :selector [:age]}])
-
 ```
 
 ## Composition
@@ -57,6 +56,11 @@ redundant error messages.
       => '({:selector [:email],    :type :vlad.validations/present}
            {:selector [:password], :type :vlad.validations/present}))
 ```
+
+Notice that only the `:vlad.validations/present` validation was shown for
+`:password`. Errors about length, patterns and confirmation are not shown until
+appropriate. In this case `chain` has also saved us from nil pointer errors as
+later validations are only run if earlier ones pass.
 
 And of course all these validations could be run over any data. Whether you're
 pulling it in from a web service, a database or a csv file somewhere.
