@@ -25,10 +25,10 @@ API Docs: <http://logaan.github.io/vlad/vlad.html>
 (def validation
   (present [:age]))
 
-(def data
+(def invalid-data
   {:name "Logan Campbell"})
 
-(fact (validate validation data)
+(fact (validate validation invalid-data)
       => [{:type :vlad.validations/present
            :selector [:age]}])
 ```
