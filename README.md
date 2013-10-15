@@ -1,4 +1,4 @@
-# vlad
+# Vlad
 
 Vlad is an attempt at providing convenient and simple validations. Vlad is
 purely functional. It makes no assumptions about your data. It can be used for
@@ -9,7 +9,7 @@ Those coming from a Ruby on Rails background will be famliar with validations
 poluted with conditional statements and models poluted with virtual attributes.
 Vlad aims to avoid this mess.
 
-To use vlad add the following to your `project.clj` dependencies:
+To use Vlad add the following to your `project.clj` dependencies:
 
     [vlad "1.0.0"]
 
@@ -74,7 +74,7 @@ pulling it in from a web service, a database or a csv file somewhere.
 ## Translation
 
 Vlad is an exercise in extreme simpicity. This means you can use validations in
-any number of ways. Because errors are not coupled to messages vlad is well
+any number of ways. Because errors are not coupled to messages Vlad is well
 suited for localisation. Default english translations are provided for your
 convenience.
 
@@ -121,10 +121,10 @@ convenience.
 ## Alternatives
 
 There are 7 validation libraries up on [Clojure Toolbox]
-(http://www.clojure-toolbox.com/). I believe vlad to be the simplest of the
+(http://www.clojure-toolbox.com/). I believe Vlad to be the simplest of the
 lot. It differs from most other's in the following ways:
 
-* Validations can be composed. Fail fast composition (`chain` in vlad) is
+* Validations can be composed. Fail fast composition (`chain` in Vlad) is
   missing from all libraries I saw. This runs the risk of presenting your users
   with a page full of redundant errors.
 * Validations are not tied to any particular data type. They just need to
