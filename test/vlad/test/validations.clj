@@ -3,11 +3,15 @@
         [vlad validations validation-types]))
 
 (tabular
-  (fact (validate ?validator {:name "Chris" :confirm_name "Brad"}) => ?errors)
+  (fact (validate ?validator {:name "Chris" :confirm_name "Brad" :number-of-teeth 32}) => ?errors)
   ?validator ?errors
 
   (present [:name])
   []                   
+
+  (present [:number-of-teeth])
+  [{:type :vlad.validations/present
+    :selector [:number-of-teeth]}] 
 
   (present [:age])
   [{:type :vlad.validations/present
