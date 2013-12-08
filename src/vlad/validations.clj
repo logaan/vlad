@@ -10,7 +10,7 @@
     (validate (present :name)
               {:name \"Vlad\"})"
   [selector]
-  (predicate selector str/blank?  {:type ::present}))
+  (predicate selector #(if (string? %) (str/blank? %) true)  {:type ::present}))
 
 (defn length-over 
   "Checks that the `count` of the value found at `selector` is over `size`."
