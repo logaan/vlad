@@ -142,3 +142,7 @@ Copyright © 2012 Logan Campbell
 
 Distributed under the Eclipse Public License, the same as Clojure.
 
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/logaan/vlad/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
