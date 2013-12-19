@@ -1,7 +1,7 @@
 (defproject vlad "1.1.0"
   :description "Vlad is an attempt at providing convenient and simple
                validations. Vlad is purely functional and makes no assumptions
-               about your data. It can be used for validating html form data as
+               about your data. It can be used for validating html form data
                just as well as it can be used to validate your csv about cats."
   :url "https://github.com/logaan/vlad"
   :license {:name "Eclipse Public License"
