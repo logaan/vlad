@@ -10,5 +10,6 @@
                  [potemkin "0.3.3"]]
   :profiles {:doc {}
              :dev {:source-paths  ["dev"]
+                   :plugins  [[lein-midje "3.1.1"]]
                    :dependencies [[midje "1.5.1"]]}})
 

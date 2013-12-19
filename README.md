@@ -19,7 +19,7 @@ API Docs: <http://logaan.github.io/vlad/vlad.html>
 
 ```clojure
 (ns vlad.test.readme
-  (:require [vlad :refer :all]
+  (:require [vlad.core :refer :all]
             [midje.sweet :refer [fact]]))
 
 (def validation

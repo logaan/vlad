@@ -1,4 +1,4 @@
-(ns vlad
+(ns vlad.core
   (:require [vlad validations validation-types default-errors]
             [potemkin :refer :all]))
 
