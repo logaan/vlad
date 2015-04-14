@@ -7,6 +7,17 @@
 (defn other-fail [data] ["other-fail"])
 (defn pass       [data] [])
 
+{:type :vlad.validations/present
+    :selector [:number-of-teeth]}
+
+(tabular
+  (fact (validate ?validator {:foo true}) => ?errors)
+  ?errors     ?validator
+  []          (in [:foo] valid)
+  [{:type :fail :selector [:foo]}] (in [:foo] (fn [_] [{:type :fail}]))
+  [{:type :fail :selector [:foo :bar]}] (in [:foo] (fn [_] [{:type :fail :selector [:bar]}]))
+  )
+
 (tabular
   (fact (validate ?validator nil) => [])
     ?validator

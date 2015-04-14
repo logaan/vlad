@@ -14,6 +14,26 @@
   functions (Don't panic. You don't need to know what that means to use vlad)."
   [data] [])
 
+(defrecord In [selector validation]
+  Validation
+  (validate [{:keys [selector validation]} data]
+    (let [errors (validate validation (get-in selector data))]
+      (map (fn [{child-selector :selector :as error}]
+             (assoc error :selector
+                       (concat selector (or child-selector []))))
+           errors))))
+
+(defn in
+  "Runs a validation on the data found at `selector`. If there are nested uses
+  of `in` any `:selector` attributes in errors will be updated to reflect the
+  full `selector`.
+  
+  Example:
+  
+  (validate (in [:name] present) {:name \"Vlad\"}"
+  ([selector] (In. selector valid))
+  ([selector validation] (In. selector validation)))
+
 ;; Two validations can be composed in a `Join`. When `validate` is called their
 ;; error messages will be combined into one sequence You can nest joined
 ;; validations and they will be recursively traversed.
