@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-cat project.clj | head -1 | sed 's/.*"\(.*\)".*/\1/'

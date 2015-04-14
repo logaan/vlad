@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION=`./script/version`
-
 lein pom
 lein jar
-scp pom.xml target/vlad-$VERSION.jar clojars@clojars.org:
+lein deploy clojars
 
