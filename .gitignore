@@ -14,3 +14,4 @@ pom.xml
 *.un~
 /.lein-repl-history
 /.nrepl-port
+pom.xml.asc
