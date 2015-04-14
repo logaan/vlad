@@ -6,14 +6,14 @@
   (fact (validate ?validator {:name "Chris" :confirm_name "Brad" :number-of-teeth 32}) => ?errors)
   ?validator ?errors
 
-  (present [:name])
+  (attr [:name] present)
   []                   
 
-  (present [:number-of-teeth])
+  (attr [:number-of-teeth] present)
   [{:type :vlad.validations/present
     :selector [:number-of-teeth]}] 
 
-  (present [:age])
+  (attr [:age] present)
   [{:type :vlad.validations/present
     :selector [:age]}] 
 

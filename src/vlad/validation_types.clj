@@ -14,25 +14,25 @@
   functions (Don't panic. You don't need to know what that means to use vlad)."
   [data] [])
 
-(defrecord In [selector validation]
+(defrecord Attr [selector validation]
   Validation
   (validate [{:keys [selector validation]} data]
-    (let [errors (validate validation (get-in selector data))]
+    (let [errors (validate validation (get-in data selector))]
       (map (fn [{child-selector :selector :as error}]
              (assoc error :selector
                        (concat selector (or child-selector []))))
            errors))))
 
-(defn in
+(defn attr
   "Runs a validation on the data found at `selector`. If there are nested uses
-  of `in` any `:selector` attributes in errors will be updated to reflect the
+  of `attr` any `:selector` attributes in errors will be updated to reflect the
   full `selector`.
   
   Example:
   
-  (validate (in [:name] present) {:name \"Vlad\"}"
-  ([selector] (In. selector valid))
-  ([selector validation] (In. selector validation)))
+  (validate (attr [:name] present) {:name \"Vlad\"})"
+  ([selector] (Attr. selector valid))
+  ([selector validation] (Attr. selector validation)))
 
 ;; Two validations can be composed in a `Join`. When `validate` is called their
 ;; error messages will be combined into one sequence You can nest joined
@@ -77,20 +77,24 @@
 ;; Predicates are simple functions that take some data and return a boolean
 ;; value. They're ideal for use as validators and so `Predicate` exists to make
 ;; wrapping them up easy. All that's needed to turn a predicate into a
-;; validator is a selector (for drilling down into data) and an error message.
-(defrecord Predicate [selector predicate information]
+;; validator is an error message.
+(defrecord Predicate [predicate information]
   Validation
-  (validate [{:keys [selector predicate information]} data]
-    (if (predicate (get-in data (flatten selector)))
-      [(assoc information :selector selector)] [])))
+  (validate [{:keys [predicate information]} data]
+    (if (predicate data) [information] [])))
 
 (defn predicate
-  "Example:
+  "Examples:
+    (predicate #(> size (count %))
+               {:type ::length-over :size size})
 
-    (predicate selector #(> size (count %))
+    (predicate [:user :password]
+               #(> size (count %))
                {:type ::length-over :size size})"
-  [selector predicate information]
-  (Predicate. selector predicate information))
+  ([pred information]
+   (Predicate. pred information))
+  ([selector pred information]
+   (attr selector (predicate pred information))))
 
 ;; The most powerful form of validator is simply a function that takes some
 ;; data and returns an array of errors. It can be composed with all other

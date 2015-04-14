@@ -31,7 +31,7 @@
   [{:type :vlad.validations/matches :name "Username" :selector [:username] :pattern #"\w+"}]
   {[:username] ["Username must match the pattern \\w+."]})
 
-(fact (assign-name (vt/validate (v/present [:foo]) {})
+(fact (assign-name (vt/validate (vt/attr [:foo] v/present) {})
              {[:foo] "Foozle"})
       => [{:name "Foozle" :type :vlad.validations/present :selector [:foo]}])
 

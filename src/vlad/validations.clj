@@ -2,15 +2,14 @@
   (:use [vlad.validation-types])
   (:require [clojure.string :as str]))
 
-(defn present
-  "Checks that the string found at `selector` is not blank.
-  
-  Example:
-  
-    (validate (present :name)
-              {:name \"Vlad\"})"
-  [selector]
-  (predicate selector #(if (string? %) (str/blank? %) true)  {:type ::present}))
+
+; Checks that a string is not blank.
+; 
+; Examples:
+; 
+;   (validate present \"Vlad\")
+(def present
+  (predicate #(if (string? %) (str/blank? %) true)  {:type ::present}))
 
 (defn length-over 
   "Checks that the `count` of the value found at `selector` is over `size`."

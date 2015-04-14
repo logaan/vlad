@@ -14,6 +14,7 @@
    equals-field
    matches]
   [vlad.validation-types
+   attr
    join
    chain
    predicate

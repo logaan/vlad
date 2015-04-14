@@ -13,9 +13,9 @@
 (tabular
   (fact (validate ?validator {:foo true}) => ?errors)
   ?errors     ?validator
-  []          (in [:foo] valid)
-  [{:type :fail :selector [:foo]}] (in [:foo] (fn [_] [{:type :fail}]))
-  [{:type :fail :selector [:foo :bar]}] (in [:foo] (fn [_] [{:type :fail :selector [:bar]}]))
+  []          (attr [:foo] valid)
+  [{:type :fail :selector [:foo]}] (attr [:foo] (fn [_] [{:type :fail}]))
+  [{:type :fail :selector [:foo :bar]}] (attr [:foo] (fn [_] [{:type :fail :selector [:bar]}]))
   )
 
 (tabular
