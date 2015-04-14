@@ -12,36 +12,36 @@
   (predicate #(if (string? %) (str/blank? %) true)  {:type ::present}))
 
 (defn length-over 
-  "Checks that the `count` of the value found at `selector` is over `size`."
-  [size selector]
-  (predicate selector #(> size (count %)) {:type ::length-over :size size}))
+  "Checks that the `count` of the value is over `size`."
+  [size]
+  (predicate #(> size (count %)) {:type ::length-over :size size}))
 
 (defn length-under 
-  "Checks that the `count` of the value found at `selector` is under `size`."
-  [size selector]
-  (predicate selector #(< size (count %)) {:type ::length-under :size size}))
+  "Checks that the `count` of the value is under `size`."
+  [size]
+  (predicate #(< size (count %)) {:type ::length-under :size size}))
 
 (defn length-in 
-  "Checks that the `count` of the value found at `selector` is over `lower` and
-  under `upper`. No checking is done that `lower` is lower than `upper`. This
-  validator may return multiple errors"
-  [lower upper selector]
+  "Checks that the `count` of the value is over `lower` and under `upper`. No
+  checking is done that `lower` is lower than `upper`. This validator may
+  return multiple errors"
+  [lower upper]
   (join
-    (length-over  lower selector)
-    (length-under upper selector)))
+    (length-over  lower)
+    (length-under upper)))
 
 (defn one-of
-  "Checks that the value found at `selector` is found within `set`"
+  "Checks that the value is found within `set`"
   [set selector]
   (predicate selector #(not (contains? set %)) {:type ::one-of :set set}))
 
 (defn not-of
-  "Checks that the value found at `selector` is not found within `set`"
+  "Checks that the value is not found within `set`"
   [set selector]
   (predicate selector #(contains? set %) {:type ::not-of :set set}))
 
 (defn equals-value
-  "Checks that the value found at `selector` is equal to the `value` that you
+  "Checks that the value is equal to the `value` that you
   provide."
   [value selector]
   (predicate selector #(not (= value %)) {:type ::equals-value :value value}))
@@ -60,10 +60,9 @@
             :second-selector second-selector}]))))
 
 (defn matches
-  "Checks that the value found at `selector` is a regex match for `pattern`.
-  This uses clojure's `re-matches` function which may not behave as you expect.
-  Your pattern will have to match the whole string found at `selector` to count
-  as a match."
+  "Checks that the value is a regex match for `pattern`.  This uses clojure's
+  `re-matches` function which may not behave as you expect.  Your pattern will
+  have to match the whole string to count as a match."
   [pattern selector]
   (predicate selector #(nil? (re-matches pattern %))
              {:type ::matches :pattern pattern}))

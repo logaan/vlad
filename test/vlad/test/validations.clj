@@ -17,26 +17,26 @@
   [{:type :vlad.validations/present
     :selector [:age]}] 
 
-  (length-over 4 [:name])
+  (attr [:name] (length-over 4))
   []                   
 
-  (length-over 9 [:name])
+  (attr [:name] (length-over 9))
   [{:type :vlad.validations/length-over
     :size 9
     :selector [:name]}] 
 
-  (length-under 9 [:name])
+  (attr [:name] (length-under 9))
   []                   
 
-  (length-under 4 [:name])
+  (attr [:name] (length-under 4))
   [{:type :vlad.validations/length-under
     :size 4
     :selector [:name]}] 
 
-  (length-in 4 9 [:name])
+  (attr [:name] (length-in 4 9))
   []                   
 
-  (length-in 9 4 [:name])
+  (attr [:name] (length-in 9 4))
   [{:type :vlad.validations/length-over
     :size 9
     :selector [:name]}
