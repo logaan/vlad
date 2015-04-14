@@ -20,9 +20,9 @@
 
 (def password
   (chain (attr [:password] present)
-         (attr [:password] (join (length-in 6 128 [])
-                                 (matches #"[a-zA-Z]" [])
-                                 (matches #"[0-9]" [])))
+         (attr [:password] (join (length-in 6 128)
+                                 (matches #"[a-zA-Z]")
+                                 (matches #"[0-9]")))
          (equals-field [:password] [:confirmation])))
 
 (def signup
