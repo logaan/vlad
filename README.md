@@ -13,7 +13,7 @@ To use Vlad add the following to your `project.clj` dependencies:
 
     [vlad "2.0.0"]
 
-API Docs: <http://logaan.github.io/vlad/vlad.html>
+API Docs: <http://logaan.github.io/vlad>
 
 ## Basics
 
