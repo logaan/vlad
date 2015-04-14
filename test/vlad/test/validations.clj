@@ -44,26 +44,26 @@
     :size 4
     :selector [:name]}]
 
-  (one-of #{"Chris" "Fred"} [:name])
+  (attr [:name] (one-of #{"Chris" "Fred"}))
   []
 
-  (one-of #{"Thelma" "Luise"} [:name])
+  (attr [:name] (one-of #{"Thelma" "Luise"}))
   [{:type :vlad.validations/one-of
     :set #{"Thelma" "Luise"}
     :selector [:name]}]
 
-  (not-of #{"Thelma" "Luise"} [:name])
+  (attr [:name] (not-of #{"Thelma" "Luise"}))
   []
 
-  (not-of #{"Chris" "Fred"} [:name])
+  (attr [:name] (not-of #{"Chris" "Fred"}))
   [{:type :vlad.validations/not-of
     :set #{"Chris" "Fred"}
     :selector [:name]}]
 
-  (equals-value "Chris" [:name])
+  (attr [:name] (equals-value "Chris"))
   []
 
-  (equals-value "Maddy" [:name])
+  (attr [:name] (equals-value "Maddy"))
   [{:type :vlad.validations/equals-value
     :value "Maddy"
     :selector [:name]}] 
@@ -76,10 +76,10 @@
     :first-selector [:name]
     :second-selector [:confirm_name]}]
   
-  (matches #"..ris" [:name])
+  (attr [:name] (matches #"..ris"))
   []
   
-  (matches #"andy" [:name])
+  (attr [:name] (matches #"andy"))
   (just [(contains {:type :vlad.validations/matches
                               :selector [:name]})]))
 

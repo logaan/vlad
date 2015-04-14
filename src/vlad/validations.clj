@@ -32,19 +32,19 @@
 
 (defn one-of
   "Checks that the value is found within `set`"
-  [set selector]
-  (predicate selector #(not (contains? set %)) {:type ::one-of :set set}))
+  [set]
+  (predicate #(not (contains? set %)) {:type ::one-of :set set}))
 
 (defn not-of
   "Checks that the value is not found within `set`"
-  [set selector]
-  (predicate selector #(contains? set %) {:type ::not-of :set set}))
+  [set]
+  (predicate #(contains? set %) {:type ::not-of :set set}))
 
 (defn equals-value
   "Checks that the value is equal to the `value` that you
   provide."
-  [value selector]
-  (predicate selector #(not (= value %)) {:type ::equals-value :value value}))
+  [value]
+  (predicate #(not (= value %)) {:type ::equals-value :value value}))
 
 (defn equals-field
   "Checks that the values found at each of your selectors are equal to each
@@ -63,7 +63,7 @@
   "Checks that the value is a regex match for `pattern`.  This uses clojure's
   `re-matches` function which may not behave as you expect.  Your pattern will
   have to match the whole string to count as a match."
-  [pattern selector]
-  (predicate selector #(nil? (re-matches pattern %))
+  [pattern]
+  (predicate #(nil? (re-matches pattern %))
              {:type ::matches :pattern pattern}))
 
