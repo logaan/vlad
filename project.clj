@@ -1,4 +1,4 @@
-(defproject vlad "1.2.1"
+(defproject vlad "2.0.0"
   :description "Vlad is an attempt at providing convenient and simple
                validations. Vlad is purely functional and makes no assumptions
                about your data. It can be used for validating html form data

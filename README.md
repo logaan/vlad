@@ -11,7 +11,7 @@ Vlad aims to avoid this mess.
 
 To use Vlad add the following to your `project.clj` dependencies:
 
-    [vlad "1.2.0"]
+    [vlad "2.0.0"]
 
 API Docs: <http://logaan.github.io/vlad/vlad.html>
 
@@ -23,7 +23,7 @@ API Docs: <http://logaan.github.io/vlad/vlad.html>
             [midje.sweet :refer [fact]]))
 
 (def validation
-  (present [:age]))
+  (attr [:age] present))
 
 (def invalid-data
   {:name "Logan Campbell"})
@@ -42,14 +42,15 @@ redundant error messages.
 
 ```clojure
 (def common
-  (join (present [:name])
-        (present [:email])))
+  (join (attr [:name] present)
+        (attr [:email] present)))
 
 (def password
-  (chain (present [:password])
-         (join (length-in 6 128 [:password])
-               (matches #"[a-zA-Z]" [:password])
-               (matches #"[0-9]" [:password]))
+  (chain (attr [:password]
+               (chain present
+                      (join (length-in 6 128)
+                            (matches #"[a-zA-Z]")
+                            (matches #"[0-9]"))))
          (equals-field [:password] [:confirmation])))
 
 (def signup
@@ -124,6 +125,7 @@ There are 7 validation libraries up on [Clojure Toolbox]
 (http://www.clojure-toolbox.com/). I believe Vlad to be the simplest of the
 lot. It differs from most other's in the following ways:
 
+* Validations can be used without your data needing to be a map or record.
 * Validations can be composed. Fail fast composition (`chain` in Vlad) is
   missing from all libraries I saw. This runs the risk of presenting your users
   with a page full of redundant errors.
