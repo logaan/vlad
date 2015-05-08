@@ -1,13 +1,13 @@
 (ns vlad.test.validation-types
-  (:use vlad.validation-types
-        midje.sweet
-        clojure.test))
+  (:require [vlad.core :refer :all]
+            [midje.sweet :refer [fact tabular]]
+            [clojure.test :refer :all]))
 
 (defn fail       [data] ["fail"])
 (defn other-fail [data] ["other-fail"])
 (defn pass       [data] [])
 
-{:type :vlad.validations/present
+{:type :vlad.core/present
     :selector [:number-of-teeth]}
 
 (tabular

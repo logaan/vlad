@@ -10,7 +10,7 @@
   {:name "Logan Campbell"})
 
 (fact (validate validation invalid-data)
-      => [{:type :vlad.validations/present
+      => [{:type :vlad.core/present
            :selector [:age]}])
 
 ; Composition
@@ -32,8 +32,8 @@
   common)
 
 (fact (validate signup {:name "Logan Campbell"})
-      => '({:selector [:email],    :type :vlad.validations/present}
-           {:selector [:password], :type :vlad.validations/present}))
+      => '({:selector [:email],    :type :vlad.core/present}
+           {:selector [:password], :type :vlad.core/present}))
 
 ; Translation
 (def english-field-names
@@ -60,7 +60,7 @@
 
 (defmulti chinese-translation :type)
 
-(defmethod chinese-translation :vlad.validations/present
+(defmethod chinese-translation :vlad.core/present
   [{:keys [name]}]
   (format "请输入%s" name))
 

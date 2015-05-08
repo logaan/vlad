@@ -1,6 +1,6 @@
 (ns vlad.test.validations
-  (:use [midje.sweet :only [tabular fact just contains]]
-        [vlad validations validation-types]))
+  (:require [vlad.core :refer :all]
+            [midje.sweet :refer [tabular fact just contains]]))
 
 (tabular
   (fact (validate ?validator {:name "Chris" :confirm_name "Brad" :number-of-teeth 32}) => ?errors)
@@ -10,18 +10,18 @@
   []                   
 
   (attr [:number-of-teeth] present)
-  [{:type :vlad.validations/present
+  [{:type :vlad.core/present
     :selector [:number-of-teeth]}] 
 
   (attr [:age] present)
-  [{:type :vlad.validations/present
+  [{:type :vlad.core/present
     :selector [:age]}] 
 
   (attr [:name] (length-over 4))
   []                   
 
   (attr [:name] (length-over 9))
-  [{:type :vlad.validations/length-over
+  [{:type :vlad.core/length-over
     :size 9
     :selector [:name]}] 
 
@@ -29,7 +29,7 @@
   []                   
 
   (attr [:name] (length-under 4))
-  [{:type :vlad.validations/length-under
+  [{:type :vlad.core/length-under
     :size 4
     :selector [:name]}] 
 
@@ -37,10 +37,10 @@
   []                   
 
   (attr [:name] (length-in 9 4))
-  [{:type :vlad.validations/length-over
+  [{:type :vlad.core/length-over
     :size 9
     :selector [:name]}
-   {:type :vlad.validations/length-under
+   {:type :vlad.core/length-under
     :size 4
     :selector [:name]}]
 
@@ -48,7 +48,7 @@
   []
 
   (attr [:name] (one-of #{"Thelma" "Luise"}))
-  [{:type :vlad.validations/one-of
+  [{:type :vlad.core/one-of
     :set #{"Thelma" "Luise"}
     :selector [:name]}]
 
@@ -56,7 +56,7 @@
   []
 
   (attr [:name] (not-of #{"Chris" "Fred"}))
-  [{:type :vlad.validations/not-of
+  [{:type :vlad.core/not-of
     :set #{"Chris" "Fred"}
     :selector [:name]}]
 
@@ -64,7 +64,7 @@
   []
 
   (attr [:name] (equals-value "Maddy"))
-  [{:type :vlad.validations/equals-value
+  [{:type :vlad.core/equals-value
     :value "Maddy"
     :selector [:name]}] 
 
@@ -72,7 +72,7 @@
   []
 
   (equals-field [:name] [:confirm_name])
-  [{:type :vlad.validations/equals-field
+  [{:type :vlad.core/equals-field
     :first-selector [:name]
     :second-selector [:confirm_name]}]
   
@@ -80,6 +80,6 @@
   []
   
   (attr [:name] (matches #"andy"))
-  (just [(contains {:type :vlad.validations/matches
+  (just [(contains {:type :vlad.core/matches
                               :selector [:name]})]))
 

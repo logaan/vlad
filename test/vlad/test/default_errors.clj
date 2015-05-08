@@ -1,37 +1,35 @@
 (ns vlad.test.default-errors
-  (:use vlad.default-errors
-        midje.sweet)
-  (:require [vlad.validation-types :as vt]
-            [vlad.validations :as v]))
+  (:require [vlad.core :refer :all]
+            [midje.sweet :refer [fact tabular]]))
 
 (tabular
   (fact (translate-errors ?errors english-translation) => ?translations)
   ?errors ?translations
 
-  [{:type :vlad.validations/present :selector [:password] :name "Password"}]
+  [{:type :vlad.core/present :selector [:password] :name "Password"}]
   {[:password] ["Password is required."]}
 
-  [{:type :vlad.validations/length-over :selector [:password] :name "Password" :size 8}]
+  [{:type :vlad.core/length-over :selector [:password] :name "Password" :size 8}]
   {[:password] ["Password must be over 8 characters long."]}
 
-  [{:type :vlad.validations/one-of :selector [:title] :name "Title" :set #{"Mr" "Ms" "Mrs"}}]
+  [{:type :vlad.core/one-of :selector [:title] :name "Title" :set #{"Mr" "Ms" "Mrs"}}]
   {[:title] ["Title must be one of Mr, Ms, Mrs."]}
 
-  [{:type :vlad.validations/not-of :selector [:username] :name "Username" :set #{"login" "logout"}}]
+  [{:type :vlad.core/not-of :selector [:username] :name "Username" :set #{"login" "logout"}}]
   {[:username] ["Username must not be one of login, logout."]}
 
-  [{:type :vlad.validations/equals-value :selector [:over_18] :name "Over 18" :value "yes"}]
+  [{:type :vlad.core/equals-value :selector [:over_18] :name "Over 18" :value "yes"}]
   {[:over_18] ["Over 18 must be \"yes\"."]}
 
-  [{:type :vlad.validations/equals-field
+  [{:type :vlad.core/equals-field
     :first-name "Password" :first-selector [:password]
     :second-name "Password confirmation" :second-selector [:password-confirmation]}]
   {nil ["Password must be the same as Password confirmation."]}
 
-  [{:type :vlad.validations/matches :name "Username" :selector [:username] :pattern #"\w+"}]
+  [{:type :vlad.core/matches :name "Username" :selector [:username] :pattern #"\w+"}]
   {[:username] ["Username must match the pattern \\w+."]})
 
-(fact (assign-name (vt/validate (vt/attr [:foo] v/present) {})
+(fact (assign-name (validate (attr [:foo] present) {})
              {[:foo] "Foozle"})
-      => [{:name "Foozle" :type :vlad.validations/present :selector [:foo]}])
+      => [{:name "Foozle" :type :vlad.core/present :selector [:foo]}])
 
