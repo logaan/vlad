@@ -182,35 +182,35 @@
 
 (defmethod english-translation :vlad.core/present
   [{:keys [name]}]
-  (format "%s is required." name))
+  (str name " is required."))
 
 (defmethod english-translation :vlad.core/length-over
   [{:keys [name size]}]
-  (format "%s must be over %s characters long." name size))
+  (str name " must be over " size " characters long."))
 
 (defmethod english-translation :vlad.core/length-under
   [{:keys [name size]}]
-  (format "%s must be under %s characters long." name size))
+  (str name " must be under " size " characters long."))
 
 (defmethod english-translation :vlad.core/one-of
   [{:keys [name set]}]
-  (format "%s must be one of %s." name (str/join ", " set)))
+  (str name " must be one of " (str/join ", " set) "."))
 
 (defmethod english-translation :vlad.core/not-of
   [{:keys [name set]}]
-  (format "%s must not be one of %s." name (str/join ", " set)))
+  (str name " must not be one of " (str/join ", " set) "."))
 
 (defmethod english-translation :vlad.core/equals-value
   [{:keys [name value]}]
-  (format "%s must be \"%s\"." name value))
+  (str name " must be \"" value "\"."))
 
 (defmethod english-translation :vlad.core/equals-field
   [{:keys [first-name second-name]}]
-  (format "%s must be the same as %s." first-name second-name))
+  (str first-name " must be the same as " second-name "."))
 
 (defmethod english-translation :vlad.core/matches
   [{:keys [name pattern]}]
-  (format "%s must match the pattern %s." name (.toString pattern)))
+  (str name " must match the pattern " (.toString pattern) "."))
 
 (defn translate-errors
   "Translates a sequence of errors into a map of plain english error messages.
