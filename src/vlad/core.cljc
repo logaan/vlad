@@ -99,7 +99,7 @@
 ;; The most powerful form of validator is simply a function that takes some
 ;; data and returns an array of errors. It can be composed with all other
 ;; validators as normal.
-(extend-type clojure.lang.IFn
+(extend-type #?(:cljs function :clj clojure.lang.IFn)
   Validation
   (validate [self data]
     (self data)))
