@@ -15,6 +15,6 @@ pom.xml
 /.lein-repl-history
 /.nrepl-port
 pom.xml.asc
-/out
+/cljs/out
 /.cljs_nashorn_repl/
 /nashorn_code_cache/

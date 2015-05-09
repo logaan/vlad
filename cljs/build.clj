@@ -3,4 +3,5 @@
 (cljs.build.api/watch
   "src"
   {:main 'vlad.core
-   :output-to "out/main.js"})
+   :output-dir "cljs/out"
+   :output-to "cljs/out/main.js"})
