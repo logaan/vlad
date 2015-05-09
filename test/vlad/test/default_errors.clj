@@ -12,11 +12,11 @@
   [{:type :vlad.core/length-over :selector [:password] :name "Password" :size 8}]
   {[:password] ["Password must be over 8 characters long."]}
 
-  [{:type :vlad.core/one-of :selector [:title] :name "Title" :set #{"Mr" "Ms" "Mrs"}}]
-  {[:title] ["Title must be one of Mr, Ms, Mrs."]}
+  [{:type :vlad.core/one-of :selector [:title] :name "Title" :set #{"Mr"}}]
+  {[:title] ["Title must be one of Mr."]}
 
-  [{:type :vlad.core/not-of :selector [:username] :name "Username" :set #{"login" "logout"}}]
-  {[:username] ["Username must not be one of login, logout."]}
+  [{:type :vlad.core/not-of :selector [:username] :name "Username" :set #{"login"}}]
+  {[:username] ["Username must not be one of login."]}
 
   [{:type :vlad.core/equals-value :selector [:over_18] :name "Over 18" :value "yes"}]
   {[:over_18] ["Over 18 must be \"yes\"."]}

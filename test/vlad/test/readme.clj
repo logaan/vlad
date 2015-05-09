@@ -28,7 +28,7 @@
 (def signup
   (join common password))
 
-(def update
+(def edit
   common)
 
 (fact (validate signup {:name "Logan Campbell"})
@@ -66,7 +66,7 @@
 
 ; Other validation translations go here.
 
-(fact (-> (validate update {:name "Rich"})
+(fact (-> (validate edit {:name "Rich"})
           (assign-name chinese-field-names)
           (translate-errors chinese-translation))
 
