@@ -9,4 +9,5 @@
   :dependencies [[org.clojure/clojure "1.7.0-beta1"]]
   :profiles {:doc {}
              :dev {:plugins  [[lein-midje "3.1.3"]]
-                   :dependencies [[midje "1.7.0-beta1"]]}})
+                   :dependencies [[midje "1.7.0-beta1"]]}}
+  :test-matcher #"vlad\.test\..*")

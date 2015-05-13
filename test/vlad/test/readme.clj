@@ -1,6 +1,6 @@
 (ns vlad.test.readme
   (:require [vlad.core :refer :all]
-            [midje.sweet :refer [fact]]))
+            [clojure.test :refer :all]))
 
 ; Basics
 (def validation
@@ -9,9 +9,10 @@
 (def invalid-data
   {:name "Logan Campbell"})
 
-(fact (validate validation invalid-data)
-      => [{:type :vlad.core/present
-           :selector [:age]}])
+(deftest basics
+  (is (= (validate validation invalid-data)
+         [{:type :vlad.core/present
+           :selector [:age]}])))
 
 ; Composition
 (def common
@@ -31,9 +32,10 @@
 (def edit
   common)
 
-(fact (validate signup {:name "Logan Campbell"})
-      => '({:selector [:email],    :type :vlad.core/present}
-           {:selector [:password], :type :vlad.core/present}))
+(deftest composition
+  (is (= (validate signup {:name "Logan Campbell"})
+      '({:selector [:email],    :type :vlad.core/present}
+        {:selector [:password], :type :vlad.core/present}))))
 
 ; Translation
 (def english-field-names
@@ -42,15 +44,16 @@
    [:password]     "Password"
    [:confirmation] "Password Confirmation"})
 
-(fact (-> (validate signup {:password "!"})
-          (assign-name english-field-names)
-          (translate-errors english-translation))
+(deftest translation
+  (is (= (-> (validate signup {:password "!"})
+             (assign-name english-field-names)
+             (translate-errors english-translation))
 
-      => {[:password] ["Password must be over 6 characters long."
+         {[:password] ["Password must be over 6 characters long."
                        "Password must match the pattern [a-zA-Z]."
                        "Password must match the pattern [0-9]."],
           [:email]    ["Email Address is required."],
-          [:name]     ["Full Name is required."]})
+          [:name]     ["Full Name is required."]})))
 
 (def chinese-field-names
   {[:name]         "姓名"
@@ -66,8 +69,9 @@
 
 ; Other validation translations go here.
 
-(fact (-> (validate edit {:name "Rich"})
-          (assign-name chinese-field-names)
-          (translate-errors chinese-translation))
+(deftest translation-chinese
+  (is (= (-> (validate edit {:name "Rich"})
+             (assign-name chinese-field-names)
+             (translate-errors chinese-translation))
 
-      => {[:email] ["请输入邮箱"]})
+         {[:email] ["请输入邮箱"]})))
