@@ -8,6 +8,9 @@
   is generally of the form `{:type ::something :some-extra-data 123}`."
   (validate [self data]))
 
+(defn valid? [validations data]
+  (empty? (validate validations data)))
+
 (defn valid
   "`valid` is a validation that does nothing. It can be safely composed with
   other validations. It is used as the identity value for reducers/monoid
@@ -230,4 +233,6 @@
                   new-errors      (conj existing-errors (translation error))]
               (assoc output-map selector new-errors)))
           {} errors))
+
+(js/console.log (valid? valid {}))
 
