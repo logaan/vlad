@@ -1,11 +1,11 @@
 (ns vlad.test.default-errors
-  (:require [vlad.core :refer :all]
-            [clojure.test :refer :all]))
+  (:require [vlad.core :as v]
+            [#?(:cljs cljs.test :clj clojure.test) :as t]))
 
-(deftest default-errors
-  (are
+(t/deftest default-errors
+  (t/are
     [?errors ?translations]
-    (= (translate-errors ?errors english-translation) ?translations)
+    (= (v/translate-errors ?errors v/english-translation) ?translations)
 
     [{:type :vlad.core/present :selector [:password] :name "Password"}]
     {[:password] ["Password is required."]}
@@ -28,9 +28,10 @@
     {nil ["Password must be the same as Password confirmation."]}
 
     [{:type :vlad.core/matches :name "Username" :selector [:username] :pattern #"\w+"}]
-    {[:username] ["Username must match the pattern \\w+."]})
+    {[:username] #?(:clj ["Username must match the pattern \\w+."]
+                    :cljs ["Username must match the pattern /\\w+/."])})
 
-  (is (= (assign-name (validate (attr [:foo] present) {})
+  (t/is (= (v/assign-name (v/validate (v/attr [:foo] v/present) {})
                       {[:foo] "Foozle"})
          [{:name "Foozle" :type :vlad.core/present :selector [:foo]}])))
 

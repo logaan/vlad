@@ -2,7 +2,8 @@
   (:require [cljs.test :as t]
             vlad.test.validation-types
             vlad.test.validations
-            vlad.test.readme))
+            vlad.test.readme
+            vlad.test.default-errors))
 
 ; Required to avoid 0 failures... appearing on the same line as Ran 3 tests..
 (set! *print-newline* true)
