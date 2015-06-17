@@ -234,5 +234,3 @@
               (assoc output-map selector new-errors)))
           {} errors))
 
-(js/console.log (valid? valid {}))
-
