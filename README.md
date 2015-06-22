@@ -11,8 +11,6 @@ Vlad aims to avoid this mess.
 
 To use Vlad add the following to your `project.clj` dependencies:
 
-    [vlad "2.0.0"]
-
 [![Clojars Project](http://clojars.org/vlad/latest-version.svg)](http://clojars.org/vlad)
 
 API Docs: <http://logaan.github.io/vlad>
