@@ -1,17 +1,17 @@
 (ns vlad.test.runner
-  (:require [cljs.test :as t]
+   (:require [cljs.test :refer-macros [run-all-tests]]
             vlad.test.validation-types
             vlad.test.validations
             vlad.test.readme
             vlad.test.default-errors))
 
-; Required to avoid 0 failures... appearing on the same line as Ran 3 tests..
-(set! *print-newline* true)
 
-(set! *print-fn*
-      (fn [& args]
-        (.apply (.-write js/document) js/document (into-array args))))
+; Props these bloggers who enabled the autotest suite:
+; - https://nvbn.github.io/2015/06/08/cljs-test/
+; - http://noprompt.github.io/clojurescript/testing/ruby/2014/01/25/autotesting-clojurescript.html
 
-(println "<pre>")
-(t/run-all-tests)
-(println "</pre>")
+(enable-console-print!)
+
+(defn ^:export run []
+  (run-all-tests #"vlad.test.*"))
+
