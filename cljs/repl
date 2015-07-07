@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-rlwrap java -cp cljs.jar:src clojure.main cljs/nashorn_repl.clj
