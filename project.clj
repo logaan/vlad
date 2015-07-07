@@ -9,10 +9,11 @@
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [org.clojure/clojurescript "0.0-3308"]]
   :profiles {:doc {}
-            :test {:dependencies [[org.clojure/tools.namespace "0.2.11"]]}}
+            :test {:dependencies [[org.clojure/tools.namespace "0.2.11"]]
+                   :plugins [[quickie "0.4.1"]
+                             [lein-cljsbuild "1.0.6"]]}}
   :test-matcher #"vlad\.test\..*"
 
-  :plugins  [[lein-cljsbuild "1.0.6"]]
   :cljsbuild {:builds {:test {:source-paths ["src" "test"]
                               :notify-command ["phantomjs" "resources/test/test.js"]
                               :compiler {:output-to "resources/test/compiled.js"

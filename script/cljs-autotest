@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+lein with-profile test cljsbuild auto test
