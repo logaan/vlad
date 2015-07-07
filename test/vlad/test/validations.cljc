@@ -88,7 +88,7 @@
     (v/attr [:name] (v/matches #"..ris"))
     [])
 
-  (let [error (first (v/validate (v/attr [:name] (v/matches #"andy")) data))]
-    (t/is (= :vlad.core/matches (:type error)))
+  (let [error (first (v/validate (v/attr [:name] (v/matches #"andy" {:type ::andy-match})) data))]
+    (t/is (= ::andy-match (:type error)))
     (t/is (= [:name] (:selector error)))))
 
