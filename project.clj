@@ -8,7 +8,8 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [org.clojure/clojurescript "0.0-3308"]]
-  :profiles {:doc {}}
+  :profiles {:doc {}
+            :test {:dependencies [[org.clojure/tools.namespace "0.2.11"]]}}
   :test-matcher #"vlad\.test\..*"
 
   :plugins  [[lein-cljsbuild "1.0.6"]]
