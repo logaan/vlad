@@ -49,8 +49,8 @@
   "Example:
 
     (join
-      (present \"Name\" :name)
-      (present \"Age\" :age))"
+      (attr :name (present))
+      (attr :age (present)))"
   ([] valid)
   ([left] left)
   ([left right] (Join. left right))
@@ -69,9 +69,10 @@
 (defn chain
   "Example:
 
-    (chain
-      (present \"Password\" :password)
-      (length_over 7 \"Password\" :password))"
+    (attr :password
+      (chain
+        (present)
+        (length-over 7))"
   ([] valid)
   ([left] left)
   ([left right] (Chain. left right))
