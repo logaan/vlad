@@ -114,64 +114,90 @@
 ; Examples:
 ; 
 ;   (validate (present) \"Vlad\")
-(defn present []
-  (predicate #(if (string? %) (str/blank? %) true)  {:type ::present}))
+(defn present
+  ([]
+   (present {}))
+  ([error-data]
+   (predicate #(if (string? %) (str/blank? %) true)
+              (merge {:type ::present} error-data))))
 
 (defn length-over 
   "Checks that the `count` of the value is over `size`."
-  [size]
-  (predicate #(> size (count %)) {:type ::length-over :size size}))
+  ([size]
+   (length-over size {}))
+  ([size error-data]
+   (predicate #(> size (count %))
+              (merge {:type ::length-over :size size} error-data))))
 
 (defn length-under 
   "Checks that the `count` of the value is under `size`."
-  [size]
-  (predicate #(< size (count %)) {:type ::length-under :size size}))
+  ([size]
+   (length-under size {}))
+  ([size error-data]
+   (predicate #(< size (count %))
+              (merge {:type ::length-under :size size} error-data))))
 
 (defn length-in 
   "Checks that the `count` of the value is over `lower` and under `upper`. No
   checking is done that `lower` is lower than `upper`. This validator may
   return multiple errors"
-  [lower upper]
-  (join
-    (length-over  lower)
-    (length-under upper)))
+  ([lower upper]
+   (length-in lower upper {}))
+  ([lower upper error-data]
+   (join
+    (length-over  lower error-data)
+    (length-under upper error-data))))
 
 (defn one-of
   "Checks that the value is found within `set`"
-  [set]
-  (predicate #(not (contains? set %)) {:type ::one-of :set set}))
+  ([set]
+   (one-of set {}))
+  ([set error-data]
+   (predicate #(not (contains? set %))
+              (merge {:type ::one-of :set set} error-data))))
 
 (defn not-of
   "Checks that the value is not found within `set`"
-  [set]
-  (predicate #(contains? set %) {:type ::not-of :set set}))
+  ([set]
+   (not-of set {}))
+  ([set error-data]
+   (predicate #(contains? set %)
+              (merge {:type ::not-of :set set} error-data))))
 
 (defn equals-value
-  "Checks that the value is equal to the `value` that you
-  provide."
-  [value]
-  (predicate #(not (= value %)) {:type ::equals-value :value value}))
+  "Checks that the value is equal to the `value` that you provide."
+  ([value]
+   (equals-value value {}))
+  ([value error-data]
+   (predicate #(not (= value %))
+              (merge {:type ::equals-value :value value}
+                     error-data))))
 
 (defn equals-field
   "Checks that the values found at each of your selectors are equal to each
   other"
-  [first-selector second-selector]
-  (fn [data]
+  ([first-selector second-selector]
+   (equals-field first-selector second-selector {}))
+  ([first-selector second-selector error-data]
+   (fn [data]
     (let [first-value  (get-in data first-selector)
           second-value (get-in data second-selector)]
       (if (= first-value second-value)
           []
-          [{:type ::equals-field
-            :first-selector first-selector
-            :second-selector second-selector}]))))
+          [(merge {:type ::equals-field
+                   :first-selector first-selector
+                   :second-selector second-selector}
+                  error-data)])))))
 
 (defn matches
   "Checks that the value is a regex match for `pattern`.  This uses clojure's
   `re-matches` function which may not behave as you expect.  Your pattern will
   have to match the whole string to count as a match."
-  [pattern]
-  (predicate #(nil? (re-matches pattern %))
-             {:type ::matches :pattern pattern}))
+  ([pattern]
+   (matches pattern {}))
+  ([pattern error-data]
+   (predicate #(nil? (re-matches pattern %))
+             (merge {:type ::matches :pattern pattern} error-data))))
 
 (defn assign-name
   "`translate` expects each field to have a human readable name. `assign-name`
