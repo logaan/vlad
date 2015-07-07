@@ -31,7 +31,7 @@
     {[:username] #?(:clj ["Username must match the pattern \\w+."]
                     :cljs ["Username must match the pattern /\\w+/."])})
 
-  (t/is (= (v/assign-name (v/validate (v/attr [:foo] v/present) {})
+  (t/is (= (v/assign-name (v/validate (v/attr [:foo] (v/present)) {})
                       {[:foo] "Foozle"})
          [{:name "Foozle" :type :vlad.core/present :selector [:foo]}])))
 

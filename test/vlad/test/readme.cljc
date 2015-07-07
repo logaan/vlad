@@ -4,7 +4,7 @@
 
 ; Basics
 (def validation
-  (v/attr [:age] v/present))
+  (v/attr [:age] (v/present)))
 
 (def invalid-data
   {:name "Logan Campbell"})
@@ -16,11 +16,11 @@
 
 ; Composition
 (def common
-  (v/join (v/attr [:name] v/present)
-          (v/attr [:email] v/present)))
+  (v/join (v/attr [:name] (v/present))
+          (v/attr [:email] (v/present))))
 
 (def password
-  (v/chain (v/attr [:password] v/present)
+  (v/chain (v/attr [:password] (v/present))
          (v/attr [:password] (v/join (v/length-in 6 128)
                                      (v/matches #"[a-zA-Z]")
                                      (v/matches #"[0-9]")))

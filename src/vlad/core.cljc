@@ -33,7 +33,7 @@
   
   Example:
   
-  (validate (attr [:name] present) {:name \"Vlad\"})"
+  (validate (attr [:name] (present)) {:name \"Vlad\"})"
   ([selector] (Attr. selector valid))
   ([selector validation] (Attr. selector validation)))
 
@@ -112,8 +112,8 @@
 ; 
 ; Examples:
 ; 
-;   (validate present \"Vlad\")
-(def present
+;   (validate (present) \"Vlad\")
+(defn present []
   (predicate #(if (string? %) (str/blank? %) true)  {:type ::present}))
 
 (defn length-over 

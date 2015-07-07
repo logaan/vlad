@@ -10,14 +10,14 @@
     [?validator ?errors]
     (= ?errors (v/validate ?validator data))
 
-    (v/attr [:name] v/present)
+    (v/attr [:name] (v/present))
     []                   
 
-    (v/attr [:number-of-teeth] v/present)
+    (v/attr [:number-of-teeth] (v/present))
     [{:type :vlad.core/present
       :selector [:number-of-teeth]}] 
 
-    (v/attr [:age] v/present)
+    (v/attr [:age] (v/present))
     [{:type :vlad.core/present
       :selector [:age]}] 
 
