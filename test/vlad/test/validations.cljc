@@ -13,9 +13,10 @@
     (v/attr [:name] (v/present))
     []                   
 
-    (v/attr [:number-of-teeth] (v/present))
+    (v/attr [:number-of-teeth] (v/present {:warning true}))
     [{:type :vlad.core/present
-      :selector [:number-of-teeth]}] 
+      :selector [:number-of-teeth]
+      :warning true}] 
 
     (v/attr [:age] (v/present))
     [{:type :vlad.core/present
@@ -24,29 +25,33 @@
     (v/attr [:name] (v/length-over 4))
     []                   
 
-    (v/attr [:name] (v/length-over 9))
+    (v/attr [:name] (v/length-over 9 {:severity :warning}))
     [{:type :vlad.core/length-over
       :size 9
-      :selector [:name]}] 
+      :selector [:name]
+      :severity :warning}] 
 
     (v/attr [:name] (v/length-under 9))
     []                   
 
-    (v/attr [:name] (v/length-under 4))
+    (v/attr [:name] (v/length-under 4 {:severity :major}))
     [{:type :vlad.core/length-under
       :size 4
-      :selector [:name]}] 
+      :selector [:name]
+      :severity :major}] 
 
     (v/attr [:name] (v/length-in 4 9))
     []                   
 
-    (v/attr [:name] (v/length-in 9 4))
+    (v/attr [:name] (v/length-in 9 4 {:foo :bar}))
     [{:type :vlad.core/length-over
       :size 9
-      :selector [:name]}
+      :selector [:name]
+      :foo :bar}
      {:type :vlad.core/length-under
       :size 4
-      :selector [:name]}]
+      :selector [:name]
+      :foo :bar}]
 
     (v/attr [:name] (v/one-of #{"Chris" "Fred"}))
     []
