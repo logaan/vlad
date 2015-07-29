@@ -277,8 +277,3 @@
 
 (defn flat-errors [validations data]
   (-> (field-errors validations data) vals flatten))
-
-(comment
-
-
-  )
