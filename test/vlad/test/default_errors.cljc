@@ -4,8 +4,8 @@
 
 (t/deftest default-errors
   (t/are
-    [?errors ?translations]
-    (= (v/translate-errors ?errors v/english-translation) ?translations)
+      [?errors ?translations]
+      (= (v/translate-errors ?errors v/english-translation) ?translations)
 
     [{:type :vlad.core/present :selector [:password] :name "Password"}]
     {[:password] ["Password is required."]}
@@ -29,9 +29,16 @@
 
     [{:type :vlad.core/matches :name "Username" :selector [:username] :pattern #"\w+"}]
     {[:username] #?(:clj ["Username must match the pattern \\w+."]
-                    :cljs ["Username must match the pattern /\\w+/."])})
+                         :cljs ["Username must match the pattern /\\w+/."])})
 
-  (t/is (= (v/assign-name (v/validate (v/attr [:foo] (v/present)) {})
-                      {[:foo] "Foozle"})
-         [{:name "Foozle" :type :vlad.core/present :selector [:foo]}])))
+  (t/is (= (v/assign-names (v/validate (v/attr [:foo] (v/present)) {})
+                           {[:foo] "Foozle"})
+           [{:name "Foozle" :type :vlad.core/present :selector [:foo]}]))
+
+  (t/is (= [{:selector [:kittens], :name "Kittens"}
+            {:selector [:long-word-example], :name "Long word example"}
+            {:selector [:address :postcode], :name "Postcode"}]
+           (v/guess-field-names [{:selector [:kittens]}
+                                 {:selector [:long-word-example]}
+                                 {:selector [:address :postcode]}]))))
 

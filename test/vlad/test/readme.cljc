@@ -46,7 +46,7 @@
 
 (t/deftest translation
   (t/is (= (-> (v/validate signup {:password "!"})
-               (v/assign-name english-field-names)
+               (v/assign-names english-field-names)
                (v/translate-errors v/english-translation))
 
            {[:password] #?(:cljs ["Password must be over 6 characters long."
@@ -75,7 +75,7 @@
 
 (t/deftest translation-chinese
   (t/is (= (-> (v/validate edit {:name "Rich"})
-               (v/assign-name chinese-field-names)
+               (v/assign-names chinese-field-names)
                (v/translate-errors chinese-translation))
 
            {[:email] ["请输入邮箱"]})))

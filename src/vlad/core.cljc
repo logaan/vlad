@@ -199,12 +199,21 @@
    (predicate #(nil? (re-matches pattern %))
              (merge {:type ::matches :pattern pattern} error-data))))
 
-(defn assign-name
-  "`translate` expects each field to have a human readable name. `assign-name`
+(defn assign-names
+  "`translate` expects each field to have a human readable name. `assign-names`
   takes a collection of errors and a map of selectors to names and will return
   the errors with names inserted."
   [errors selectors-to-names]
   (map #(assoc % :name (selectors-to-names (:selector %))) errors))
+
+(defn- guess-field-name [selector]
+  (str/capitalize (str/replace (name (last selector)) #"-" " ")))
+
+(defn guess-field-names
+  "Will convert selectors to strings by swapping hyphens for spaces and
+  capitalising."
+   [errors]
+   (map #(assoc % :name (guess-field-name (:selector %))) errors))
 
 (defmulti english-translation
   "Takes an error and returns a human readable version of it."
