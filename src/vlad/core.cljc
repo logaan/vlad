@@ -204,7 +204,10 @@
   takes a collection of errors and a map of selectors to names and will return
   the errors with names inserted."
   [errors selectors-to-names]
-  (map #(assoc % :name (selectors-to-names (:selector %))) errors))
+  (map (fn [e]
+         (if (:name e) e
+             (assoc e :name (selectors-to-names (:selector e)))))
+       errors))
 
 (defn- guess-field-name [selector]
   (str/capitalize (str/replace (name (last selector)) #"-" " ")))
@@ -213,7 +216,10 @@
   "Will convert selectors to strings by swapping hyphens for spaces and
   capitalising."
    [errors]
-   (map #(assoc % :name (guess-field-name (:selector %))) errors))
+   (map (fn [e]
+          (if (:name e) e
+            (assoc e :name (guess-field-name (:selector e)))))
+        errors))
 
 (defmulti english-translation
   "Takes an error and returns a human readable version of it."

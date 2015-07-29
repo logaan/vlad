@@ -35,6 +35,10 @@
                            {[:foo] "Foozle"})
            [{:name "Foozle" :type :vlad.core/present :selector [:foo]}]))
 
+  (t/is (= (v/assign-names (v/validate (v/attr [:foo] (v/present {:name "Kitten"})) {})
+                           {[:foo] "Foozle"})
+           [{:name "Kitten" :type :vlad.core/present :selector [:foo]}]))
+
   (t/is (= [{:selector [:kittens], :name "Kittens"}
             {:selector [:long-word-example], :name "Long word example"}
             {:selector [:address :postcode], :name "Postcode"}]
@@ -44,6 +48,9 @@
 
   (t/is (= {[:name] ["Name is required."]}
            (v/field-errors (v/attr [:name] (v/present)) {})))
+
+  (t/is (= {[:name] ["Kittens is required."]}
+           (v/field-errors (v/attr [:name] (v/present {:name "Kittens"})) {})))
 
   (t/is (= ["Name is required."]
            (v/flat-errors (v/attr [:name] (v/present)) {}))))
