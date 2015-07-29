@@ -40,5 +40,11 @@
             {:selector [:address :postcode], :name "Postcode"}]
            (v/guess-field-names [{:selector [:kittens]}
                                  {:selector [:long-word-example]}
-                                 {:selector [:address :postcode]}]))))
+                                 {:selector [:address :postcode]}])))
+
+  (t/is (= {[:name] ["Name is required."]}
+           (v/field-errors (v/attr [:name] (v/present)) {})))
+
+  (t/is (= ["Name is required."]
+           (v/flat-errors (v/attr [:name] (v/present)) {}))))
 

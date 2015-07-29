@@ -270,3 +270,15 @@
               (assoc output-map selector new-errors)))
           {} errors))
 
+(defn field-errors [validations data]
+  (-> (validate validations data)
+      (guess-field-names)
+      (translate-errors english-translation)))
+
+(defn flat-errors [validations data]
+  (-> (field-errors validations data) vals flatten))
+
+(comment
+
+
+  )
