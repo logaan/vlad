@@ -23,7 +23,7 @@ API Docs: <http://logaan.github.io/vlad>
             [midje.sweet :refer [fact]]))
 
 (def validation
-  (attr [:age] present))
+  (attr [:age] (present)))
 
 (def invalid-data
   {:name "Logan Campbell"})
@@ -42,12 +42,12 @@ redundant error messages.
 
 ```clojure
 (def common
-  (join (attr [:name] present)
-        (attr [:email] present)))
+  (join (attr [:name] (present))
+        (attr [:email] (present))))
 
 (def password
   (chain (attr [:password]
-               (chain present
+               (chain (present)
                       (join (length-in 6 128)
                             (matches #"[a-zA-Z]")
                             (matches #"[0-9]"))))
@@ -88,7 +88,7 @@ convenience.
 
 (midje/fact
   (-> (validate signup {:password "!"})
-      (assign-name english-field-names)
+      (assign-names english-field-names)
       (translate-errors english-translation))
 
   => {[:password] ["Password must be over 6 characters long."
@@ -113,7 +113,7 @@ convenience.
 
 (midje/fact
   (-> (validate update {:name "Rich"})
-      (assign-name chinese-field-names)
+      (assign-names chinese-field-names)
       (translate-errors chinese-translation))
 
   => {[:email] ["请输入邮箱"]})
