@@ -259,7 +259,8 @@
 
 (defn translate-errors
   "Translates a sequence of errors into a map of plain english error messages.
-   Selectors are used as keys.
+  Selectors are used as keys. The error message may be overwritten by setting
+  the :message key in your error map.
 
    Example:
 
@@ -272,7 +273,9 @@
   [errors translation]
   (reduce (fn [output-map {:keys [selector] :as error}]
             (let [existing-errors (get output-map selector [])
-                  new-errors      (conj existing-errors (translation error))]
+                  new-error       (if-let [message (:message error)]
+                                    message (translation error))
+                  new-errors      (conj existing-errors new-error)]
               (assoc output-map selector new-errors)))
           {} errors))
 

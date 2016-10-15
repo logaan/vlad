@@ -10,6 +10,9 @@
     [{:type :vlad.core/present :selector [:password] :name "Password"}]
     {[:password] ["Password is required."]}
 
+    [{:message "Custom message." :selector [:password]}]
+    {[:password] ["Custom message."]}
+
     [{:type :vlad.core/length-over :selector [:password] :name "Password" :size 8}]
     {[:password] ["Password must be over 8 characters long."]}
 
@@ -51,6 +54,9 @@
 
   (t/is (= {[:name] ["Kittens is required."]}
            (v/field-errors (v/attr [:name] (v/present {:name "Kittens"})) {})))
+
+  (t/is (= ["Name is required."]
+           (v/flat-errors (v/attr [:name] (v/present)) {})))
 
   (t/is (= ["Name is required."]
            (v/flat-errors (v/attr [:name] (v/present)) {}))))
