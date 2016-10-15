@@ -25,18 +25,18 @@
     (v/attr [:name] (v/length-over 4))
     []
 
-    (v/attr [:name] (v/length-over 9 {:severity :warning}))
+    (v/attr [:name] (v/length-over 5 {:severity :warning}))
     [{:type :vlad.core/length-over
-      :size 9
+      :size 5
       :selector [:name]
       :severity :warning}]
 
-    (v/attr [:name] (v/length-under 9))
+    (v/attr [:name] (v/length-under 6))
     []
 
-    (v/attr [:name] (v/length-under 4 {:severity :major}))
+    (v/attr [:name] (v/length-under 5 {:severity :major}))
     [{:type :vlad.core/length-under
-      :size 4
+      :size 5
       :selector [:name]
       :severity :major}]
 

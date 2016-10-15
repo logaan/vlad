@@ -30,9 +30,9 @@
   "Runs a validation on the data found at `selector`. If there are nested uses
   of `attr` any `:selector` attributes in errors will be updated to reflect the
   full `selector`.
-  
+
   Example:
-  
+
   (validate (attr [:name] (present)) {:name \"Vlad\"})"
   ([selector] (Attr. selector valid))
   ([selector validation] (Attr. selector validation)))
@@ -110,9 +110,9 @@
 
 
 ; Checks that a string is not blank.
-; 
+;
 ; Examples:
-; 
+;
 ;   (validate (present) \"Vlad\")
 (defn present
   ([]
@@ -121,23 +121,23 @@
    (predicate #(if (string? %) (str/blank? %) true)
               (merge {:type ::present} error-data))))
 
-(defn length-over 
+(defn length-over
   "Checks that the `count` of the value is over `size`."
   ([size]
    (length-over size {}))
   ([size error-data]
-   (predicate #(> size (count %))
+   (predicate #(>= size (count %))
               (merge {:type ::length-over :size size} error-data))))
 
-(defn length-under 
+(defn length-under
   "Checks that the `count` of the value is under `size`."
   ([size]
    (length-under size {}))
   ([size error-data]
-   (predicate #(< size (count %))
+   (predicate #(<= size (count %))
               (merge {:type ::length-under :size size} error-data))))
 
-(defn length-in 
+(defn length-in
   "Checks that the `count` of the value is over `lower` and under `upper`. No
   checking is done that `lower` is lower than `upper`. This validator may
   return multiple errors"
