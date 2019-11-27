@@ -18,5 +18,5 @@ pom.xml.asc
 /cljs/out
 /.cljs_nashorn_repl/
 /nashorn_code_cache/
-/resources/test/compiled.js
+/test-resources/test/compiled.js
 .*\.~undo-tree~

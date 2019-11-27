@@ -1,5 +1,5 @@
 var page = require('webpage').create();
-var url = "resources/test/test.html";
+var url = "test-resources/test/test.html";
 
 page.onConsoleMessage = function (message) {
     console.log(message);

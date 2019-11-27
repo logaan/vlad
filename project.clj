@@ -10,12 +10,13 @@
                  [org.clojure/clojurescript "1.10.520" :scope "provided"]]
   :profiles {:doc  {}
              :test {:dependencies   [[org.clojure/tools.namespace "0.2.11"]]
+                    :resource-paths ["test-resources"]
                     :plugins        [[quickie "0.4.1"]
                                      [lein-cljsbuild "1.1.7"]]}}
   :test-matcher #"vlad\.test\..*"
 
   :cljsbuild {:builds {:test {:source-paths ["src" "test"]
-                              :notify-command ["phantomjs" "resources/test/test.js"]
-                              :compiler {:output-to "resources/test/compiled.js"
+                              :notify-command ["phantomjs" "test-resources/test/test.js"]
+                              :compiler {:output-to "test-resources/test/compiled.js"
                                          :optimizations :whitespace
                                          :pretty-print true}}}})
