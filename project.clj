@@ -6,12 +6,12 @@
   :url "https://github.com/logaan/vlad"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :dependencies [[org.clojure/clojure "1.7.0"]
-                 [org.clojure/clojurescript "0.0-3308"]]
-  :profiles {:doc {}
-            :test {:dependencies [[org.clojure/tools.namespace "0.2.11"]]
-                   :plugins [[quickie "0.4.1"]
-                             [lein-cljsbuild "1.0.6"]]}}
+  :dependencies [[org.clojure/clojure "1.10.1" :scope "provided"]
+                 [org.clojure/clojurescript "1.10.520" :scope "provided"]]
+  :profiles {:doc  {}
+             :test {:dependencies   [[org.clojure/tools.namespace "0.2.11"]]
+                    :plugins        [[quickie "0.4.1"]
+                                     [lein-cljsbuild "1.1.7"]]}}
   :test-matcher #"vlad\.test\..*"
 
   :cljsbuild {:builds {:test {:source-paths ["src" "test"]
