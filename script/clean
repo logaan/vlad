@@ -2,7 +2,7 @@
 
 rm pom.xml
 rm pom.xml.asc
-rm resources/test/compiled.js
+rm test-resources/test/compiled.js
 rm -rf doc/
 rm -rf nashorn_code_cache/
 rm -rf .cljs_nashorn_repl/
